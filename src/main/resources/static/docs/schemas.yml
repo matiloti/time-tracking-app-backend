@@ -1,0 +1,65 @@
+components:
+  schemas:
+    ProjectPostRequest:
+      type: object
+      required:
+        - title
+        - description
+        - category
+      properties:
+        name:
+          description: Project title
+          type: string
+          example: "Sample project"
+        description:
+          description: Project description
+          type: string
+          example: "This is a time tracking app with timers"
+        category:
+          description: Project category
+          type: object
+          required:
+            -   id
+          properties:
+            id:
+              description: Category ID
+              type: integer
+              format: int32
+              example: 12345
+    ProjectPostResponse:
+      type: object
+      properties:
+        id:
+          description: Project generated ID
+          type: integer
+          format: int32
+          example: 12345
+        name:
+          description: Project title
+          type: string
+          example: "Sample project"
+        description:
+          description: Project description
+          type: string
+          example: "This is a time tracking app with timers"
+        category:
+          description: Project category
+          type: object
+          properties:
+            id:
+              description: Category ID
+              type: integer
+              format: int32
+              example: 12345
+        creationDate:
+          description: Project creation date and time in ISO 8601 format
+          type: string
+          format: date-time
+          example: "2025-06-08T14:30:00Z"
+    BadRequestResponse:
+      type: object
+      properties:
+        error:
+          description: Error message
+          type: string
+          example: "The project title already exists"

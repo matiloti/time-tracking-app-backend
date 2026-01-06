@@ -1,0 +1,11 @@
+components:
+  examples:
+    ProjectPostRequestBasicExample:
+      summary: A basic project post request example
+      description: |
+        This example creates a new project with title, description and category.
+      value:
+        title: "Sample project"
+        description: "This is a time tracking app with timers"
+        category:
+          id: 12345

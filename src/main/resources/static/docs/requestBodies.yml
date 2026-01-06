@@ -1,0 +1,11 @@
+components:
+  requestBodies:
+    Project:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: 'http://localhost:8080/docs/schemas.yml#/components/schemas/ProjectPostRequest'
+          examples:
+            ProjectPostRequestBasicExample:
+              $ref: 'http://localhost:8080/docs/examples.yml#/components/examples/ProjectPostRequestBasicExample'

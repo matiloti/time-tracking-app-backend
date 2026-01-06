@@ -1,0 +1,15 @@
+paths:
+  /project:
+    post:
+      tags: [Project]
+      summary: Creates a new project
+      description: This operation creates a new project with title, description and category. It also sets the creation date to now and time tracked to 0.
+      requestBody:
+        $ref: 'http://localhost:8080/docs/requestBodies.yml#/components/requestBodies/Project'
+      responses:
+        '201':
+          $ref: 'http://localhost:8080/docs/responses.yml#/components/responses/ProjectPost201'
+        '400':
+          $ref: 'http://localhost:8080/docs/responses.yml#/components/responses/BadRequest400'
+        '500':
+          $ref: 'http://localhost:8080/docs/responses.yml#/components/responses/ServerError500'

@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+    title: Time Tracking App
+    description: |-
+      This is a time tracking app
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: Project
+    description: Endpoints to manage projects
+paths:
+  /project:
+    $ref: 'http://localhost:8080/docs/paths.yml#/paths/~1project'

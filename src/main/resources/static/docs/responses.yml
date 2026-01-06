@@ -1,0 +1,18 @@
+components:
+  responses:
+    ProjectPost201:
+      description: Project successfully created
+      content:
+        application/json:
+          schema:
+            $ref: 'http://localhost:8080/docs/schemas.yml#/components/schemas/ProjectPostResponse'
+    BadRequest400:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: 'http://localhost:8080/docs/schemas.yml#/components/schemas/BadRequestResponse'
+    NotFound404:
+      description: Not found
+    ServerError500:
+      description: Unexpected server error
