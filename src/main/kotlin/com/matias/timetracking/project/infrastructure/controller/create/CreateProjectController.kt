@@ -3,7 +3,6 @@ package com.matias.timetracking.project.infrastructure.controller.create
 import com.matias.timetracking.project.application.usecase.create.CreateProjectCommand
 import com.matias.timetracking.project.application.usecase.create.CreateProjectUseCase
 import com.matias.timetracking.project.infrastructure.controller.create.dto.CreateProjectRequest
-import com.matias.timetracking.project.infrastructure.controller.create.dto.CreateProjectResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,7 +15,7 @@ import java.net.URI
 class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
-    fun createProject(@RequestBody request: CreateProjectRequest): ResponseEntity<CreateProjectResponse> {
+    fun createProject(@RequestBody request: CreateProjectRequest): ResponseEntity<Any> {
         try {
             val createdId = createProjectUseCase
                 .execute(request.mapToCommand())
