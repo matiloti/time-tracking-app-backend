@@ -1,9 +1,9 @@
 package com.matias.timetracking.project.infrastructure.controller.create
 
-import com.matias.timetracking.project.application.usecase.create.ProjectCreationCommand
-import com.matias.timetracking.project.application.usecase.create.ProjectCreationUseCase
-import com.matias.timetracking.project.infrastructure.controller.create.dto.ProjectCreationRequest
-import com.matias.timetracking.project.infrastructure.controller.create.dto.ProjectCreationResponse
+import com.matias.timetracking.project.application.usecase.create.CreateProjectCommand
+import com.matias.timetracking.project.application.usecase.create.CreateProjectUseCase
+import com.matias.timetracking.project.infrastructure.controller.create.dto.CreateProjectRequest
+import com.matias.timetracking.project.infrastructure.controller.create.dto.CreateProjectResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,12 +13,12 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/project")
-class ProjectController(val projectCreationUseCase: ProjectCreationUseCase) {
+class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
-    fun createProject(@RequestBody request: ProjectCreationRequest): ResponseEntity<ProjectCreationResponse> {
+    fun createProject(@RequestBody request: CreateProjectRequest): ResponseEntity<CreateProjectResponse> {
         try {
-            val createdId = projectCreationUseCase
+            val createdId = createProjectUseCase
                 .execute(request.mapToCommand())
                 .id
             return ResponseEntity.created(URI.create("/project/${createdId}")).build();
@@ -28,8 +28,8 @@ class ProjectController(val projectCreationUseCase: ProjectCreationUseCase) {
         }
     }
 
-    fun ProjectCreationRequest.mapToCommand(): ProjectCreationCommand =
-        ProjectCreationCommand(
+    fun CreateProjectRequest.mapToCommand(): CreateProjectCommand =
+        CreateProjectCommand(
             name,
             description,
             categoryId

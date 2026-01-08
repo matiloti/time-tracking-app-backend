@@ -5,14 +5,14 @@ import com.matias.timetracking.project.domain.aggregate.Project
 import java.time.LocalDateTime
 import java.util.UUID
 
-class ProjectCreationUseCase(val projectRepository: ProjectRepositoryPort) {
-    fun execute(request: ProjectCreationCommand): ProjectCreationResponse {
+class CreateProjectUseCase(val projectRepository: ProjectRepositoryPort) {
+    fun execute(request: CreateProjectCommand): CreateProjectResponse {
         val project = request.mapToDomain()
         projectRepository.save(project)
-        return ProjectCreationResponse(project.id)
+        return CreateProjectResponse(project.id)
     }
 
-    fun ProjectCreationCommand.mapToDomain() = Project(
+    fun CreateProjectCommand.mapToDomain() = Project(
         UUID.randomUUID(),
         name,
         description,
