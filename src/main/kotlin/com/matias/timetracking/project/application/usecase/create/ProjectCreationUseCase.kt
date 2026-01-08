@@ -14,7 +14,7 @@ class ProjectCreationUseCase(val projectRepository: ProjectRepositoryPort) {
 
     fun ProjectCreationCommand.mapToDomain() = Project(
         UUID.randomUUID(),
-        title,
+        name,
         description,
         categoryId,
         LocalDateTime.now()

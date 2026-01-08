@@ -30,7 +30,7 @@ class ProjectController(val projectCreationUseCase: ProjectCreationUseCase) {
 
     fun ProjectCreationRequest.mapToCommand(): ProjectCreationCommand =
         ProjectCreationCommand(
-            title,
+            name,
             description,
             categoryId
         )

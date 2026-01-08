@@ -16,19 +16,19 @@ class ProjectRepositoryAdapter(val jdbc: NamedParameterJdbcTemplate): ProjectRep
             """
                 INSERT INTO projects (
                     id,
-                    title,
+                    name,
                     description,
                     category_id,
                     created_at
-                ) VALUES (:id,:title,:description,:categoryId,:createdAt)
+                ) VALUES (:id,:name,:description,:categoryId,:createdAt)
                 ON CONFLICT (id)
                 DO UPDATE SET
-                    title = EXCLUDED.title,
+                    name = EXCLUDED.name,
                     description = EXCLUDED.description,
                     category_id = EXCLUDED.category_id
             """.trimIndent(), mapOf(
                 "id" to project.id,
-                "title" to project.title,
+                "name" to project.name,
                 "description" to project.description,
                 "categoryId" to project.categoryId,
                 "createdAt" to Timestamp.valueOf(project.createdAt)

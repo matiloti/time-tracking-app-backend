@@ -5,7 +5,7 @@ import java.util.UUID
 
 class Project(
     val id: UUID,
-    val title: String,
+    val name: String,
     val description: String,
     val categoryId: Int,
     val createdAt: LocalDateTime?

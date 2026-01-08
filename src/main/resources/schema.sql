@@ -5,7 +5,7 @@ CREATE TABLE categories (
 
 CREATE TABLE projects (
 	id UUID PRIMARY KEY,
-	title VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(50) UNIQUE NOT NULL,
 	description VARCHAR(500) NOT NULL,
 	category_id INTEGER NOT NULL,
 	created_at TIMESTAMP NOT NULL,
