@@ -74,16 +74,20 @@ class GlobalControllerAdvice {
             ))
 
     @ExceptionHandler(Exception::class)
-    fun handleAppException(): ResponseEntity<RFC7807Response> =
-        ResponseEntity
+    fun handleAppException(e: Exception): ResponseEntity<RFC7807Response> {
+        print(e)
+        return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(RFC7807Response(
-                URI.create(""),
-                "An unexpected error ocurred",
-                HttpStatus.BAD_REQUEST,
-                null,
-                null
-            ))
+            .body(
+                RFC7807Response(
+                    URI.create(""),
+                    "An unexpected error ocurred",
+                    HttpStatus.BAD_REQUEST,
+                    null,
+                    null
+                )
+            )
+    }
     companion object {
         private val URI_REGEX = Regex.fromLiteral("(([a-z]+):\\/\\/)?([a-z-\\.]+)(\\.([a-z]+))?(:(\\d{1,4}))?")
         private fun trimDomain(uri: String) = uri.replace(URI_REGEX, "")

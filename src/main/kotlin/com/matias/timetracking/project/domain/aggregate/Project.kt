@@ -8,5 +8,5 @@ class Project(
     val title: String,
     val description: String,
     val categoryId: Int,
-    val creationDate: LocalDateTime?
+    val createdAt: LocalDateTime?
 )

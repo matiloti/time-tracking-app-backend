@@ -2,6 +2,7 @@ package com.matias.timetracking.project.application.usecase.create
 
 import com.matias.timetracking.project.domain.repository.ProjectRepositoryPort
 import com.matias.timetracking.project.domain.aggregate.Project
+import java.time.LocalDateTime
 import java.util.UUID
 
 class ProjectCreationUseCase(val projectRepository: ProjectRepositoryPort) {
@@ -16,6 +17,6 @@ class ProjectCreationUseCase(val projectRepository: ProjectRepositoryPort) {
         title,
         description,
         categoryId,
-        null
+        LocalDateTime.now()
     )
 }
