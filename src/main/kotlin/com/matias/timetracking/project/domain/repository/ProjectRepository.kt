@@ -4,4 +4,5 @@ import com.matias.timetracking.project.domain.aggregate.Project
 
 interface ProjectRepositoryPort {
     fun save(project: Project)
+    fun findAll(): List<Project>
 }

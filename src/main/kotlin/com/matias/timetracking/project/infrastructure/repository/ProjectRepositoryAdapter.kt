@@ -2,10 +2,12 @@ package com.matias.timetracking.project.infrastructure.repository
 
 import com.matias.timetracking.project.domain.aggregate.Project
 import com.matias.timetracking.project.domain.repository.ProjectRepositoryPort
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
+import java.util.UUID
 
 @Repository
 class ProjectRepositoryAdapter(val jdbc: NamedParameterJdbcTemplate): ProjectRepositoryPort {
@@ -35,5 +37,19 @@ class ProjectRepositoryAdapter(val jdbc: NamedParameterJdbcTemplate): ProjectRep
             )
         )
     }
+
+    override fun findAll(): List<Project> =
+        jdbc.query(
+            "SELECT * FROM projects ORDER BY created_at DESC",
+            RowMapper { rs, _ ->
+                Project(
+                    id = UUID.fromString(rs.getString("id")),
+                    name = rs.getString("name"),
+                    description = rs.getString("description"),
+                    categoryId = rs.getInt("category_id"),
+                    createdAt = rs.getTimestamp("created_at").toLocalDateTime()
+                )
+            }
+        )
 
 }
