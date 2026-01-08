@@ -1,11 +1,11 @@
 package com.matias.timetracking.project.application.usecase.create
 
-import com.matias.timetracking.project.domain.repository.ProjectRepositoryPort
+import com.matias.timetracking.project.domain.repository.ProjectRepository
 import com.matias.timetracking.project.domain.aggregate.Project
 import java.time.LocalDateTime
 import java.util.UUID
 
-class CreateProjectUseCase(val projectRepository: ProjectRepositoryPort) {
+class CreateProjectUseCase(val projectRepository: ProjectRepository) {
     fun execute(request: CreateProjectCommand): CreateProjectResponse {
         val project = request.mapToDomain()
         projectRepository.save(project)
