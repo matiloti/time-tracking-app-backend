@@ -1,28 +1,6 @@
-# Swagger
-springdoc:
-  swagger-ui.path: '/swagger-ui.html'
-  swagger-ui.url: 'docs/api-contract.yml'
-  swagger-ui.enabled: 'true'
-
 # Database configuration
 spring:
-  web:
-    resources:
-      static-locations: 'classpath:/static/'
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/time-tracking'
-    username: 'postgres'
-    password: '1234'
     driver-class-name: 'org.postgresql.Driver'
-
-# Logger - Debug logs for DispatcherServlet (to see incoming requests and responses) and for our packages
-logging:
-  level:
-    com:
-      matias:
-        fitnessapp: 'DEBUG'
-    org:
-      springframework:
-        web:
-          servlet:
-            DispatcherServlet: 'DEBUG'
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}

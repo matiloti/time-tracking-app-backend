@@ -1,0 +1,25 @@
+# Swagger
+springdoc:
+  swagger-ui.path: '/swagger-ui.html'
+  swagger-ui.url: 'docs/api-contract.yml'
+  swagger-ui.enabled: 'true'
+
+# Database configuration
+spring:
+  web:
+    resources:
+      static-locations: 'classpath:/static/'
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/time-tracking'
+
+# Logger - Debug logs for DispatcherServlet (to see incoming requests and responses) and for our packages
+logging:
+  level:
+    com:
+      matias:
+        fitnessapp: 'DEBUG'
+    org:
+      springframework:
+        web:
+          servlet:
+            DispatcherServlet: 'DEBUG'

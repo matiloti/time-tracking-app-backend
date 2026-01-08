@@ -1,0 +1,4 @@
+# Database configuration
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/time-tracking'
