@@ -47,5 +47,5 @@ bin/
 .name
 
 gradle.xml
-
 vcs.xml
+sqldialects.xml
