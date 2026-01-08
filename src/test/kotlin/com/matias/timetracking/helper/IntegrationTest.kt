@@ -8,7 +8,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 
 @Testcontainers
-class IntegrationTest {
+open class IntegrationTest {
 
     companion object {
         @Container
@@ -16,13 +16,16 @@ class IntegrationTest {
             withDatabaseName("postgres")
             withUsername("test")
             withPassword("test")
+            withInitScript("init.sql")
+            .start()
         }
-    }
 
-    @DynamicPropertySource
-    fun registerProps(registry: DynamicPropertyRegistry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl)
-        registry.add("spring.datasource.username", postgres::getUsername)
-        registry.add("spring.datasource.password", postgres::getPassword)
+        @JvmStatic
+        @DynamicPropertySource
+        fun registerProps(registry: DynamicPropertyRegistry) {
+            registry.add("spring.datasource.url", postgres::getJdbcUrl)
+            registry.add("spring.datasource.username", postgres::getUsername)
+            registry.add("spring.datasource.password", postgres::getPassword)
+        }
     }
 }
