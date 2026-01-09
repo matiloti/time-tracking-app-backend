@@ -49,3 +49,4 @@ bin/
 gradle.xml
 vcs.xml
 sqldialects.xml
+/.idea/inspectionProfiles/Project_Default.xml
