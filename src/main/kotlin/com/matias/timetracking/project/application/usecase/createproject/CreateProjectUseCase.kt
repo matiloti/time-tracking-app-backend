@@ -1,4 +1,4 @@
-package com.matias.timetracking.project.application.usecase.create
+package com.matias.timetracking.project.application.usecase.createproject
 
 import com.matias.timetracking.project.domain.repository.ProjectRepository
 import com.matias.timetracking.project.domain.aggregate.Project

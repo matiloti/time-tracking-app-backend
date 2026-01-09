@@ -1,4 +1,4 @@
-package com.matias.timetracking.project.application.usecase.create
+package com.matias.timetracking.project.application.usecase.createproject
 
 data class CreateProjectCommand(
     val name: String,

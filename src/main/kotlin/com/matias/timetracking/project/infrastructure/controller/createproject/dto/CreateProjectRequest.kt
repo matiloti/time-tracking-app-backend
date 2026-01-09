@@ -1,4 +1,4 @@
-package com.matias.timetracking.project.infrastructure.controller.create.dto
+package com.matias.timetracking.project.infrastructure.controller.createproject.dto
 
 data class CreateProjectRequest(
     val name: String,

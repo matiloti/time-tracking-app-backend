@@ -1,7 +1,7 @@
 package com.matias.timetracking.project.unit
 
-import com.matias.timetracking.project.application.usecase.create.CreateProjectCommand
-import com.matias.timetracking.project.application.usecase.create.CreateProjectUseCase
+import com.matias.timetracking.project.application.usecase.createproject.CreateProjectCommand
+import com.matias.timetracking.project.application.usecase.createproject.CreateProjectUseCase
 import com.matias.timetracking.project.domain.aggregate.Project
 import com.matias.timetracking.project.domain.repository.ProjectRepository
 import org.junit.jupiter.api.BeforeEach

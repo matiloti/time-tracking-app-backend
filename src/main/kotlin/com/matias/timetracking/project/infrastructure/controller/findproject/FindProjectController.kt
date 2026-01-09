@@ -1,6 +1,6 @@
-package com.matias.timetracking.project.infrastructure.controller.find
+package com.matias.timetracking.project.infrastructure.controller.findproject
 
-import com.matias.timetracking.project.application.usecase.find.FindAllProjectsUseCase
+import com.matias.timetracking.project.application.usecase.findproject.FindAllProjectsUseCase
 import com.matias.timetracking.project.domain.aggregate.Project
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

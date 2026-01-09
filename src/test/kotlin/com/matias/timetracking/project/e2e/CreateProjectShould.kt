@@ -1,7 +1,7 @@
 package com.matias.timetracking.project.e2e
 
 import com.matias.timetracking.helper.IntegrationTest
-import com.matias.timetracking.project.infrastructure.controller.create.dto.CreateProjectRequest
+import com.matias.timetracking.project.infrastructure.controller.createproject.dto.CreateProjectRequest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
