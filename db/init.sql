@@ -15,6 +15,22 @@ CREATE TABLE projects (
           ON DELETE SET NULL
 );
 
+CREATE TABLE milestones (
+    id UUID PRIMARY KEY,
+    project_id UUID NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(500) NOT NULL,
+    start_date TIMESTAMP,
+    end_date TIMESTAMP,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    -- TODO: add unique constraint for pair <id, project_id>
+    CONSTRAINT fk__milestones_projects
+      FOREIGN KEY (project_id)
+          REFERENCES projects(id)
+          ON DELETE CASCADE
+);
+
 INSERT INTO categories(id,name) VALUES(1,'Software');
 INSERT INTO categories(id,name) VALUES(2,'Content Creation');
 INSERT INTO categories(id,name) VALUES(3,'Learning');
