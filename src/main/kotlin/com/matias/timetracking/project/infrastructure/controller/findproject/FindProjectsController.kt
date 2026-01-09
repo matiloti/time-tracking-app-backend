@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/projects")
-class FindProjectController(val findAllProjectsUseCase: FindAllProjectsUseCase) {
+class FindProjectsController(val findAllProjectsUseCase: FindAllProjectsUseCase) {
     @GetMapping("/findAll")
     fun findAll(): ResponseEntity<List<Project>> {
         try {
