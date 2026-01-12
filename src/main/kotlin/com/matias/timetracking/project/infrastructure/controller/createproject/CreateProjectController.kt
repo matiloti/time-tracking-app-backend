@@ -21,15 +21,10 @@ class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
     fun createProject(@RequestBody request: CreateProjectRequest): ResponseEntity<Any> {
-        try {
-            val createdId = createProjectUseCase
-                .execute(request.mapToCommand())
-                .id
-            return ResponseEntity.created(URI.create("/project/${createdId}")).build();
-        } catch (e: Exception) {
-            print(e)
-            return ResponseEntity.internalServerError().build();
-        }
+        val createdId = createProjectUseCase
+            .execute(request.mapToCommand())
+            .id
+        return ResponseEntity.created(URI.create("/project/${createdId}")).build();
     }
 
     fun CreateProjectRequest.mapToCommand(): CreateProjectCommand =
