@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class GlobalControllerAdvice {
 
     @ExceptionHandler(Exception::class)
-    fun handleDomainException(e: Exception, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleGenericException(e: Exception, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -25,7 +25,7 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(BadSqlGrammarException::class)
-    fun handleDomainException(e: BadSqlGrammarException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleBadSqlGrammarException(e: BadSqlGrammarException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -38,7 +38,7 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(DataAccessResourceFailureException::class)
-    fun handleDomainException(e: DataAccessResourceFailureException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleDataAccessResourceFailureException(e: DataAccessResourceFailureException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
