@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/projects")
 class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
@@ -24,7 +24,7 @@ class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
         val createdId = createProjectUseCase
             .execute(request.mapToCommand())
             .id
-        return ResponseEntity.created(URI.create("/project/${createdId}")).build();
+        return ResponseEntity.created(URI.create("/projects/${createdId}")).build();
     }
 
     fun CreateProjectRequest.mapToCommand(): CreateProjectCommand =

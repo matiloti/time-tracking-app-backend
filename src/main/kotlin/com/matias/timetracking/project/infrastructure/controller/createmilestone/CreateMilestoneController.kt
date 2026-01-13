@@ -13,7 +13,7 @@ import java.net.URI
 import java.util.UUID
 
 @RestController
-@RequestMapping("/project/{projectId}/milestone")
+@RequestMapping("/projects/{projectId}/milestone")
 class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCase) {
 
     @PostMapping

@@ -28,12 +28,12 @@ class CreateProjectShould: IntegrationTest() {
     fun `create project`() {
         restTemplate
             .post()
-            .uri("http://localhost:$port/project")
+            .uri("http://localhost:$port/projects")
             .body(CreateProjectRequest(name = "Test Project", description = "Test description", categoryId = 1))
             .exchange()
             .expectStatus().isCreated
             .expectHeader().exists("Location")
-            .expectHeader().valueMatches("location","/project/.+")
+            .expectHeader().valueMatches("location","/projects/.+")
 
         val rowCount = jdbc.queryForObject("SELECT COUNT(*) FROM projects", emptyMap<String, Any>(), Int::class.java)
         assertEquals(1, rowCount)

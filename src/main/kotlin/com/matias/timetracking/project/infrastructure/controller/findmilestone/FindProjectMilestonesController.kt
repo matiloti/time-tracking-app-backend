@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/project/{projectId}")
+@RequestMapping("/projects/{projectId}")
 class FindProjectMilestonesController(val findProjectMilestonesUseCase: FindProjectMilestonesUseCase) {
 
     @GetMapping("/milestones")
