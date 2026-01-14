@@ -45,25 +45,4 @@ class MilestoneRepositoryAdapter(val jdbc: NamedParameterJdbcTemplate): Mileston
         )
     }
 
-    override fun findAllByProjectId(projectId: UUID): List<Milestone> =
-        jdbc.query(
-            """
-                SELECT * 
-                FROM milestones 
-                    JOIN projects ON milestones.project_id = projects.id
-                ORDER BY start_date DESC""".trimIndent(),
-            { rs, _ ->
-                Milestone(
-                    id = UUID.fromString(rs.getString("id")),
-                    projectId = UUID.fromString(rs.getString("project_id")),
-                    name = rs.getString("name"),
-                    description = rs.getString("description"),
-                    startDate = rs.getTimestamp("start_date").toLocalDateTime(),
-                    endDate = rs.getTimestamp("end_date").toLocalDateTime(),
-                    createdAt = rs.getTimestamp("created_at").toLocalDateTime(),
-                    updatedAt = rs.getTimestamp("updated_at").toLocalDateTime()
-                )
-            }
-        )
-
 }

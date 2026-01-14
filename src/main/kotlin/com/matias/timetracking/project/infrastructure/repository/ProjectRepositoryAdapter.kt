@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
-import java.util.UUID
+import java.util.*
 
 @Repository
 class ProjectRepositoryAdapter(val jdbc: NamedParameterJdbcTemplate): ProjectRepository {
