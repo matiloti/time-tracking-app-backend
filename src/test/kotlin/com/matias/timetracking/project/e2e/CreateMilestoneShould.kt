@@ -3,7 +3,6 @@ package com.matias.timetracking.project.e2e
 import com.matias.timetracking.helper.IntegrationTest
 import com.matias.timetracking.project.domain.repository.ProjectRepository
 import com.matias.timetracking.project.infrastructure.controller.createmilestone.CreateMilestoneRequest
-import com.matias.timetracking.project.infrastructure.dao.row.MilestoneRow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.test.Test
 
@@ -80,28 +80,14 @@ class CreateMilestoneShould: IntegrationTest() {
             .expectHeader().exists("Location")
             .expectHeader().valueMatches("location","/projects/${projectId}/milestones/.+")
 
-        val milestones = jdbc.query<MilestoneRow>(
-            "SELECT * FROM milestones",
-            emptyMap<String, Int>()
-        ) { rs, _ ->
-            MilestoneRow(
-                id = UUID.fromString(rs.getString("id")),
-                projectId = UUID.fromString(rs.getString("projectId")),
-                name = rs.getString("name"),
-                description = rs.getString("description"),
-                startDate = LocalDateTime.from(rs.getTimestamp("start_date").toInstant()),
-                endDate = LocalDateTime.from(rs.getTimestamp("end_date").toInstant()),
-                createdAt = LocalDateTime.from(rs.getTimestamp("created_at").toInstant()),
-                updatedAt = LocalDateTime.from(rs.getTimestamp("updated_at").toInstant()),
-            )
-        }
-        assertTrue(milestones.isNotEmpty())
+        val project = projectRepository.findById(projectId)
+        assertTrue(project.milestones().isNotEmpty())
 
-        with(milestones.first()) {
+        with(project.milestones().first()) {
             assertEquals(name, request.name)
             assertEquals(description, request.description)
-            assertEquals(startDate, request.startDate)
-            assertEquals(endDate, request.endDate)
+            assertEquals(startDate?.truncatedTo(ChronoUnit.MILLIS), request.startDate?.truncatedTo(ChronoUnit.MILLIS))
+            assertEquals(endDate?.truncatedTo(ChronoUnit.MILLIS), request.endDate?.truncatedTo(ChronoUnit.MILLIS))
         }
     }
 }

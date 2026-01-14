@@ -61,7 +61,7 @@ class ProjectRepositoryAdapter(
                 DO UPDATE SET
                     name = EXCLUDED.name,
                     description = EXCLUDED.description,
-                    start_date = EXCLUDED.start_date
+                    start_date = EXCLUDED.start_date,
                     end_date = EXCLUDED.end_date,
                     updated_at = EXCLUDED.updated_at
             """.trimIndent(),

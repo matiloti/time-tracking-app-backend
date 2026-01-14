@@ -16,7 +16,6 @@ open class IntegrationTest {
             withDatabaseName("postgres")
             withUsername("test")
             withPassword("test")
-            withInitScript("init.sql")
             .start()
         }
 

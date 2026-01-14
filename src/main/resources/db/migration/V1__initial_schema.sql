@@ -4,15 +4,15 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE projects (
-    id UUID PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL,
-    description VARCHAR(500) NOT NULL,
-    category_id INTEGER NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    CONSTRAINT fk__projects_categories
+  id UUID PRIMARY KEY,
+  name VARCHAR(50) UNIQUE NOT NULL,
+  description VARCHAR(500) NOT NULL,
+  category_id INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  CONSTRAINT fk__projects_categories
       FOREIGN KEY (category_id)
           REFERENCES categories(id)
-          ON DELETE SET NULL
+          ON DELETE RESTRICT
 );
 
 CREATE TABLE milestones (
@@ -25,9 +25,9 @@ CREATE TABLE milestones (
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     CONSTRAINT fk__milestones_projects
-      FOREIGN KEY (project_id)
-          REFERENCES projects(id)
-          ON DELETE CASCADE
+    FOREIGN KEY (project_id)
+    REFERENCES projects(id)
+    ON DELETE CASCADE
 );
 
 INSERT INTO categories(id,name) VALUES(1,'Software');
