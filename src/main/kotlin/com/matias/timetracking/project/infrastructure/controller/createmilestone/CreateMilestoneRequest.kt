@@ -1,4 +1,4 @@
-package com.matias.timetracking.project.infrastructure.controller.createmilestone.dto
+package com.matias.timetracking.project.infrastructure.controller.createmilestone
 
 import java.time.LocalDateTime
 

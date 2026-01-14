@@ -19,12 +19,11 @@ CREATE TABLE milestones (
     id UUID PRIMARY KEY,
     project_id UUID NOT NULL,
     name VARCHAR(50) NOT NULL,
-    description VARCHAR(500) NOT NULL,
+    description VARCHAR(500),
     start_date TIMESTAMP,
     end_date TIMESTAMP,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
-    -- TODO: add unique constraint for pair <id, project_id>
     CONSTRAINT fk__milestones_projects
       FOREIGN KEY (project_id)
           REFERENCES projects(id)

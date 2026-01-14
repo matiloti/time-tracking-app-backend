@@ -13,10 +13,13 @@ import java.util.*
 @RequestMapping("/projects")
 class GetProjectDetailsController(val projectQueryRepository: ProjectQueryRepository) {
     @GetMapping("/{projectId}")
-    fun getProjectDetails(@PathVariable projectId: UUID): ResponseEntity<ProjectDetailsDto> {
-        val projectDetail = projectQueryRepository.getProjectDetailsById(projectId)
-        return ResponseEntity.ok(projectDetail)
-    }
+    fun getProjectDetails(@PathVariable projectId: UUID): ResponseEntity<ProjectDetailsDto> =
+        projectQueryRepository
+            .getProjectDetailsById(projectId)
+            .mapToResponse()
+
+    fun ProjectDetailsDto.mapToResponse(): ResponseEntity<ProjectDetailsDto> =
+        ResponseEntity.ok(this)
 
     @ExceptionHandler(EmptyResultDataAccessException::class)
     fun handleNotFoundException() : ResponseEntity<Any> =

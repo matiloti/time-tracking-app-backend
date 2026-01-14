@@ -1,27 +1,21 @@
 package com.matias.timetracking.project.application.usecase.createmilestone
 
-import com.matias.timetracking.project.domain.aggregate.Milestone
 import com.matias.timetracking.project.domain.repository.ProjectRepository
-import com.matias.timetracking.project.domain.aggregate.Project
-import com.matias.timetracking.project.domain.repository.MilestoneRepository
-import java.time.LocalDateTime
-import java.util.UUID
+import org.springframework.stereotype.Service
 
-class CreateMilestoneUseCase(val milestoneRepository: MilestoneRepository) {
+@Service
+class CreateMilestoneUseCase(val projectRepository: ProjectRepository) {
     fun execute(request: CreateMilestoneCommand): CreateMilestoneResponse {
-        val milestone = request.mapToDomain()
-        milestoneRepository.save(milestone)
-        return CreateMilestoneResponse(milestone.id)
+        val project = projectRepository.findById(request.projectId)
+        val newMilestone = project
+            .createNewMilestone(
+                request.name,
+                request.description,
+                request.startDate,
+                request.endDate
+            )
+        projectRepository.save(project)
+        return CreateMilestoneResponse(newMilestone.id)
     }
 
-    fun CreateMilestoneCommand.mapToDomain() = Milestone(
-        UUID.randomUUID(),
-        projectId,
-        name,
-        description,
-        startDate,
-        endDate,
-        LocalDateTime.now(),
-        LocalDateTime.now()
-    )
 }

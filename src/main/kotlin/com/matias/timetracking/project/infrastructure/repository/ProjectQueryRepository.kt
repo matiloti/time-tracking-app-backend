@@ -2,6 +2,7 @@ package com.matias.timetracking.project.infrastructure.repository
 
 import com.matias.timetracking.project.infrastructure.controller.getprojectdetails.MilestoneItem
 import com.matias.timetracking.project.infrastructure.controller.getprojectdetails.ProjectDetailsDto
+import com.matias.timetracking.project.infrastructure.controller.listallprojects.ProjectListItemDto
 import com.matias.timetracking.project.infrastructure.dao.MilestoneDao
 import com.matias.timetracking.project.infrastructure.dao.ProjectDao
 import org.springframework.stereotype.Repository
@@ -14,7 +15,7 @@ class ProjectQueryRepository(
 ) {
 
     fun getProjectDetailsById(projectId: UUID): ProjectDetailsDto {
-        val projectRow = projectDao.getProjectRow(projectId)
+        val projectRow = projectDao.findById(projectId)
         val projectMilestoneRows = milestoneDao.findAllByProjectId(projectId)
 
         return ProjectDetailsDto(
@@ -31,4 +32,14 @@ class ProjectQueryRepository(
             ) }
         )
     }
+
+    fun listAllProjects(): List<ProjectListItemDto> =
+        projectDao.findAll().map {
+            ProjectListItemDto(
+                it.id,
+                it.name,
+                it.description,
+                it.categoryId
+            )
+        }
 }

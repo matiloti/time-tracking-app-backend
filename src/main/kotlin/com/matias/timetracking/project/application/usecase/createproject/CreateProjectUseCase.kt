@@ -1,22 +1,26 @@
 package com.matias.timetracking.project.application.usecase.createproject
 
-import com.matias.timetracking.project.domain.repository.ProjectRepository
 import com.matias.timetracking.project.domain.aggregate.Project
-import java.time.LocalDateTime
-import java.util.UUID
+import com.matias.timetracking.project.domain.repository.ProjectRepository
+import org.springframework.stereotype.Service
 
+@Service
 class CreateProjectUseCase(val projectRepository: ProjectRepository) {
-    fun execute(request: CreateProjectCommand): CreateProjectResponse {
-        val project = request.mapToDomain()
-        projectRepository.save(project)
-        return CreateProjectResponse(project.id)
-    }
+    fun execute(request: CreateProjectCommand): CreateProjectResponse =
+        request
+            .createProjectFromRequest()
+            .save()
+            .mapToResponse()
 
-    fun CreateProjectCommand.mapToDomain() = Project(
-        UUID.randomUUID(),
-        name,
-        description,
-        categoryId,
-        LocalDateTime.now()
-    )
+    fun CreateProjectCommand.createProjectFromRequest() =
+        Project.createNewProject(
+            name,
+            description,
+            categoryId
+        )
+
+    fun Project.save() = apply { projectRepository.save(this) }
+
+    fun Project.mapToResponse(): CreateProjectResponse =
+        CreateProjectResponse(id)
 }

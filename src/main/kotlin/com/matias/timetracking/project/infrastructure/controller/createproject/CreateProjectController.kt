@@ -3,8 +3,9 @@ package com.matias.timetracking.project.infrastructure.controller.createproject
 import com.matias.timetracking.common.infrastructure.ApiError
 import com.matias.timetracking.common.infrastructure.ApiProjectErrorCodes
 import com.matias.timetracking.project.application.usecase.createproject.CreateProjectCommand
+import com.matias.timetracking.project.application.usecase.createproject.CreateProjectResponse
 import com.matias.timetracking.project.application.usecase.createproject.CreateProjectUseCase
-import com.matias.timetracking.project.infrastructure.controller.createproject.dto.CreateProjectRequest
+import com.matias.timetracking.project.infrastructure.controller.createproject.CreateProjectRequest
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,12 +21,10 @@ import java.net.URI
 class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
-    fun createProject(@RequestBody request: CreateProjectRequest): ResponseEntity<Any> {
-        val createdId = createProjectUseCase
+    fun createProject(@RequestBody request: CreateProjectRequest): ResponseEntity<Any> =
+        createProjectUseCase
             .execute(request.mapToCommand())
-            .id
-        return ResponseEntity.created(URI.create("/projects/${createdId}")).build();
-    }
+            .mapToResponse()
 
     fun CreateProjectRequest.mapToCommand(): CreateProjectCommand =
         CreateProjectCommand(
@@ -33,6 +32,9 @@ class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
             description,
             categoryId
         )
+
+    fun CreateProjectResponse.mapToResponse(): ResponseEntity<Any> =
+        ResponseEntity.created(URI.create("/projects/${id}")).build()
 
     @ExceptionHandler(DuplicateKeyException::class)
     fun handleDuplicateKeyException(): ResponseEntity<Any> =

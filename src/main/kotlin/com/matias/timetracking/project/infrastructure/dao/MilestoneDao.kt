@@ -3,7 +3,7 @@ package com.matias.timetracking.project.infrastructure.dao
 import com.matias.timetracking.project.infrastructure.dao.row.MilestoneRow
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
 @Repository
 class MilestoneDao(val jdbc: NamedParameterJdbcTemplate) {
@@ -11,12 +11,12 @@ class MilestoneDao(val jdbc: NamedParameterJdbcTemplate) {
     fun findAllByProjectId(projectId: UUID): List<MilestoneRow> =
         jdbc.query(
             """
-                SELECT * 
+                SELECT m.* 
                 FROM milestones m
-                    JOIN projects p ON milestones.project_id = projects.id
-                WHERE p.id = :id
-                ORDER BY start_date DESC""".trimIndent(),
-            mapOf("id" to projectId.toString()),
+                    JOIN projects p ON m.project_id = p.id
+                WHERE m.project_id = :projectId
+                ORDER BY m.start_date DESC""".trimIndent(),
+            mapOf("projectId" to projectId),
             { rs, _ ->
                 MilestoneRow(
                     id = UUID.fromString(rs.getString("id")),
