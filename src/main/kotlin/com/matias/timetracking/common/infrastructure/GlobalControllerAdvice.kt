@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @ControllerAdvice
 class GlobalControllerAdvice {
@@ -46,6 +47,19 @@ class GlobalControllerAdvice {
                 ApiError(
                     ApiGenericErrorCodes.SERVER_ERROR.name,
                     ApiGenericErrorCodes.SERVER_ERROR.msg
+                )
+            )
+    }
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundExceptionException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+        logError(request, e)
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(
+                ApiError(
+                    ApiGenericErrorCodes.RESOURCE_NOT_FOUND.name,
+                    ApiGenericErrorCodes.RESOURCE_NOT_FOUND.msg
                 )
             )
     }
