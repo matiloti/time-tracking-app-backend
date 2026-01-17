@@ -1,10 +1,12 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE categories (
-    id INTEGER PRIMARY KEY,
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
 CREATE TABLE projects (
-  id UUID PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(50) UNIQUE NOT NULL,
   description VARCHAR(500) NOT NULL,
   category_id INTEGER NOT NULL,
@@ -16,7 +18,7 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE milestones (
-    id UUID PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL,
     name VARCHAR(50) NOT NULL,
     description VARCHAR(500),
@@ -30,6 +32,6 @@ CREATE TABLE milestones (
     ON DELETE CASCADE
 );
 
-INSERT INTO categories(id,name) VALUES(1,'Software');
-INSERT INTO categories(id,name) VALUES(2,'Content Creation');
-INSERT INTO categories(id,name) VALUES(3,'Learning');
+INSERT INTO categories(id,name) VALUES('Software');
+INSERT INTO categories(id,name) VALUES('Content Creation');
+INSERT INTO categories(id,name) VALUES('Learning');

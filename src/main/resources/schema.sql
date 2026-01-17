@@ -9,6 +9,7 @@ CREATE TABLE projects (
 	description VARCHAR(500) NOT NULL,
 	category_id INTEGER NOT NULL,
 	created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
 	CONSTRAINT fk__projects_categories
 		FOREIGN KEY (category_id)
 		REFERENCES categories(id)

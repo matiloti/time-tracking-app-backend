@@ -12,12 +12,16 @@ spring:
 
 # Logger - Debug logs for DispatcherServlet (to see incoming requests and responses) and for our packages
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
   level:
     com:
       matias:
-        fitnessapp: 'DEBUG'
+        fitnessapp: DEBUG
     org:
       springframework:
+        jdbc:
+          core: DEBUG
         web:
           servlet:
-            DispatcherServlet: 'DEBUG'
+            DispatcherServlet: DEBUG

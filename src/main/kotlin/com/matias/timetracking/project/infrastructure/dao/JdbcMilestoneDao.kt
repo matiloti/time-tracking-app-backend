@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 
 @Repository
-class JdbcMilestoneDao(val jdbc: NamedParameterJdbcTemplate) {
-    fun batchSave(milestones: List<MilestoneRow>): IntArray? =
+class JdbcMilestoneDao(private val jdbc: NamedParameterJdbcTemplate) {
+    fun batchSave(milestones: List<MilestoneRow>): IntArray =
         jdbc.batchUpdate(
             """
             INSERT INTO milestones (

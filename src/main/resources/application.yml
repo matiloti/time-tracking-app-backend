@@ -1,12 +1,25 @@
 # Database configuration
 spring:
+  application:
+    name: time-tracking-app
   datasource:
     driver-class-name: 'org.postgresql.Driver'
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
   flyway:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,metrics
+  threads:
+    virtual:
+      enabled: true

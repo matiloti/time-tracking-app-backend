@@ -1,7 +1,7 @@
 package com.matias.timetracking.project.infrastructure.controller.getprojectdetails
 
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class ProjectDetailsDto(
     val id: UUID,

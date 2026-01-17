@@ -63,7 +63,4 @@ tasks.register<BootRun>("bootRunProd") {
 
 	// Set Spring profile to prod
 	systemProperty("spring.profiles.active", "prod")
-
-	// Optional: pass other env variables
-	systemProperty("spring.profiles.active", "prod")
 }

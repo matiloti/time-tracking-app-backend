@@ -1,12 +1,12 @@
 package com.matias.timetracking.common.infrastructure
 
+import com.matias.timetracking.project.domain.exception.DuplicatedProjectNameException
+import com.matias.timetracking.project.domain.exception.ProjectIdNotFoundException
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.dao.DataAccessResourceFailureException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
@@ -19,36 +19,7 @@ class GlobalControllerAdvice {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ApiError(
-                ApiGenericErrorCodes.SERVER_ERROR.name,
-                ApiGenericErrorCodes.SERVER_ERROR.msg
-            ))
-    }
-
-    @ExceptionHandler(BadSqlGrammarException::class)
-    fun handleBadSqlGrammarException(e: BadSqlGrammarException, request: HttpServletRequest): ResponseEntity<ApiError> {
-        logError(request, e)
-        return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(
-                ApiError(
-                    ApiGenericErrorCodes.SERVER_ERROR.name,
-                    ApiGenericErrorCodes.SERVER_ERROR.msg
-                )
-            )
-    }
-
-    @ExceptionHandler(DataAccessResourceFailureException::class)
-    fun handleDataAccessResourceFailureException(e: DataAccessResourceFailureException, request: HttpServletRequest): ResponseEntity<ApiError> {
-        logError(request, e)
-        return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(
-                ApiError(
-                    ApiGenericErrorCodes.SERVER_ERROR.name,
-                    ApiGenericErrorCodes.SERVER_ERROR.msg
-                )
-            )
+            .body(ApiGenericErrorCodes.SERVER_ERROR.getApiError())
     }
 
     @ExceptionHandler(NoResourceFoundException::class)
@@ -56,12 +27,23 @@ class GlobalControllerAdvice {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(
-                ApiError(
-                    ApiGenericErrorCodes.RESOURCE_NOT_FOUND.name,
-                    ApiGenericErrorCodes.RESOURCE_NOT_FOUND.msg
-                )
-            )
+            .body(ApiGenericErrorCodes.RESOURCE_NOT_FOUND.getApiError())
+    }
+
+    @ExceptionHandler(ProjectIdNotFoundException::class)
+    fun handleNoResourceFoundExceptionException(e: ProjectIdNotFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+        logError(request, e)
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(ApiProjectErrorCodes.PROJECT_ID_NOT_FOUND.getApiError(e.message!!))
+    }
+
+    @ExceptionHandler(DuplicatedProjectNameException::class)
+    fun handleNoResourceFoundExceptionException(e: DuplicatedProjectNameException, request: HttpServletRequest): ResponseEntity<ApiError> {
+        logError(request, e)
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(ApiProjectErrorCodes.DUPLICATED_PROJECT_NAME.getApiError(e.message!!))
     }
 
     companion object {

@@ -1,11 +1,8 @@
 package com.matias.timetracking.project.infrastructure.controller.createmilestone
 
-import com.matias.timetracking.common.infrastructure.ApiError
-import com.matias.timetracking.common.infrastructure.ApiProjectErrorCodes
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneCommand
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneResponse
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneUseCase
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -24,7 +21,7 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
             .execute(request.mapToCommand(projectId))
             .mapToResponse(projectId)
 
-    fun CreateMilestoneRequest.mapToCommand(projectId: UUID): CreateMilestoneCommand =
+    private fun CreateMilestoneRequest.mapToCommand(projectId: UUID): CreateMilestoneCommand =
         CreateMilestoneCommand(
             projectId,
             name,
@@ -33,16 +30,8 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
             endDate
         )
 
-    fun CreateMilestoneResponse?.mapToResponse(projectId: UUID): ResponseEntity<Any> =
-        if (this != null) ResponseEntity
+    private fun CreateMilestoneResponse.mapToResponse(projectId: UUID): ResponseEntity<Any> =
+        ResponseEntity
             .created(URI.create("/projects/${projectId}/milestones/${id}"))
             .build()
-        else ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(
-                ApiError(
-                    ApiProjectErrorCodes.PROJECT_ID_DOES_NOT_EXIST.name,
-                    ApiProjectErrorCodes.PROJECT_ID_DOES_NOT_EXIST.msg
-                )
-            )
 }

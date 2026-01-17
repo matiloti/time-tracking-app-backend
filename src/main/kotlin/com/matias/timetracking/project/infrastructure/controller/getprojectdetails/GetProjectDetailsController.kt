@@ -1,6 +1,5 @@
 package com.matias.timetracking.project.infrastructure.controller.getprojectdetails
 
-import com.matias.timetracking.common.infrastructure.ApiError
 import com.matias.timetracking.common.infrastructure.ApiProjectErrorCodes
 import com.matias.timetracking.project.infrastructure.repository.ProjectQueryRepository
 import org.springframework.http.HttpStatus
@@ -20,14 +19,9 @@ class GetProjectDetailsController(val projectQueryRepository: ProjectQueryReposi
             .getProjectDetailsById(projectId)
             .mapToResponse()
 
-    fun ProjectDetailsDto?.mapToResponse(): ResponseEntity<Any> =
+    private fun ProjectDetailsDto?.mapToResponse(): ResponseEntity<Any> =
         if (this != null) ResponseEntity.ok(this)
         else ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(
-                ApiError(
-                    ApiProjectErrorCodes.PROJECT_ID_DOES_NOT_EXIST.name,
-                    ApiProjectErrorCodes.PROJECT_ID_DOES_NOT_EXIST.msg
-                )
-            )
+            .body(ApiProjectErrorCodes.PROJECT_ID_NOT_FOUND.getApiError())
 }

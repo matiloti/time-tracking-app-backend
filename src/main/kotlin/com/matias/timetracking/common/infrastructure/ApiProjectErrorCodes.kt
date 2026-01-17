@@ -1,6 +1,16 @@
 package com.matias.timetracking.common.infrastructure
 
-enum class ApiProjectErrorCodes(val msg: String) {
-    DUPLICATED_PROJECT_TITLE("The project title already exists, try another one"),
-    PROJECT_ID_DOES_NOT_EXIST("The informed project ID does not exist"),
+enum class ApiProjectErrorCodes(val defaultMsg: String) {
+    PROJECT_ID_NOT_FOUND("Project with ID not found"),
+    DUPLICATED_PROJECT_NAME("Duplicated project name");
+
+    fun getApiError() = ApiError(
+        code = this.name,
+        message = this.defaultMsg
+    )
+
+    fun getApiError(msg: String) = ApiError(
+        code = this.name,
+        message = msg
+    )
 }
