@@ -21,33 +21,47 @@ class ProjectRepositoryAdapter(
 ): ProjectRepository {
 
     @Transactional
-    override fun save(project: Project) {
-        projectDao.save(ProjectRow(
-            project.id,
-            project.name,
-            project.description,
-            project.categoryId,
-            project.createdAt,
-            project.updatedAt,
-            isNewEntity = true
-        ))
-
-        jdbcMilestoneDao.batchSave(
-            project.milestones().map { milestone ->
-                MilestoneRow(
-                    milestone.id,
-                    milestone.projectId,
-                    milestone.name,
-                    milestone.description,
-                    milestone.startDate,
-                    milestone.endDate,
-                    milestone.createdAt,
-                    milestone.updatedAt,
-                    isNewEntity = true
-                )
-            }
+    override fun save(project: Project): Project {
+        val projectRow = ProjectRow(
+            id = project.id,
+            name = project.name,
+            description = project.description,
+            categoryId = project.categoryId,
+            createdAt = project.createdAt,
+            updatedAt = project.updatedAt()
         )
+        projectDao.save(projectRow)
 
+        val insertedMilestones = project.milestones().filter { it.id == null }.map { milestone ->
+            milestoneDao.save(MilestoneRow(
+                id = milestone.id,
+                projectId = milestone.projectId,
+                name = milestone.name,
+                description = milestone.description,
+                startDate = milestone.startDate,
+                endDate = milestone.endDate,
+                createdAt = milestone.createdAt,
+                updatedAt = milestone.updatedAt()
+            ))
+        }.toMutableList()
+
+        val updatedMilestones = project.milestones().filter { it.id != null }.map { milestone ->
+            MilestoneRow(
+                id = milestone.id,
+                projectId = milestone.projectId,
+                name = milestone.name,
+                description = milestone.description,
+                startDate = milestone.startDate,
+                endDate = milestone.endDate,
+                createdAt = milestone.createdAt,
+                updatedAt = milestone.updatedAt()
+            )
+        }
+        jdbcMilestoneDao.batchUpdate(updatedMilestones)
+
+        insertedMilestones.addAll(updatedMilestones)
+
+        return projectRow.loadDomainObject(insertedMilestones)
     }
 
     override fun findById(projectId: UUID): Project? =
@@ -57,11 +71,8 @@ class ProjectRepositoryAdapter(
 
     override fun findAll(): List<Project> {
         val projects = projectDao.findAll()
-        val projectIds = projects.map { it.id }
+        val projectIds = projects.mapNotNull { it.id }
         val milestonesByProjectId = milestoneDao.findByProjectIdIn(projectIds).groupBy { it.projectId }
         return projects.map { it.loadDomainObject(milestonesByProjectId[it.id] ?: emptyList()) }
     }
-
-
-
 }

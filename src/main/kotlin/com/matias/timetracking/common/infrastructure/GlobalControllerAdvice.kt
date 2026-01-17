@@ -1,5 +1,6 @@
 package com.matias.timetracking.common.infrastructure
 
+import com.matias.timetracking.project.domain.exception.DomainException
 import com.matias.timetracking.project.domain.exception.DuplicatedProjectNameException
 import com.matias.timetracking.project.domain.exception.ProjectIdNotFoundException
 import jakarta.servlet.http.HttpServletRequest
@@ -30,8 +31,16 @@ class GlobalControllerAdvice {
             .body(ApiGenericErrorCodes.RESOURCE_NOT_FOUND.getApiError())
     }
 
+    @ExceptionHandler(DomainException::class)
+    fun handleDomainException(e: DomainException, request: HttpServletRequest): ResponseEntity<ApiError> {
+        logError(request, e)
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiGenericErrorCodes.DOMAIN_ERROR.getApiError(e.message!!))
+    }
+
     @ExceptionHandler(ProjectIdNotFoundException::class)
-    fun handleNoResourceFoundExceptionException(e: ProjectIdNotFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleProjectIdNotFoundExceptionException(e: ProjectIdNotFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
@@ -39,7 +48,7 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(DuplicatedProjectNameException::class)
-    fun handleNoResourceFoundExceptionException(e: DuplicatedProjectNameException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleDuplicatedProjectNameExceptionException(e: DuplicatedProjectNameException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.CONFLICT)
@@ -53,7 +62,8 @@ class GlobalControllerAdvice {
             e: Exception
         ) = logger.error(
             """[${e.javaClass.simpleName}] ${request.method} ${request.requestURI}
-                |\n\n\t>>> Message: ${e.message} 
-                |\n\n\t>>> Cause: ${e.cause}""".trimMargin()
+                |>>> Message: ${e.message} 
+                |>>> Cause: ${e.cause}
+                |>>> Trace: ${e.printStackTrace()}""".trimMargin()
         )    }
 }

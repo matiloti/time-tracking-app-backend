@@ -13,7 +13,7 @@ class CreateProjectUseCase(private val projectRepository: ProjectRepository) {
             .createProjectFromRequest()
             .runCatching { this.save() }
             .fold(
-                onSuccess = { CreateProjectResponse(it.id) },
+                onSuccess = { CreateProjectResponse(it.id!!) },
                 onFailure = { e ->
                     when(e) {
                         is DuplicateKeyException -> throw DuplicatedProjectNameException(request.name)
@@ -23,11 +23,11 @@ class CreateProjectUseCase(private val projectRepository: ProjectRepository) {
             )
 
     private fun CreateProjectCommand.createProjectFromRequest() =
-        Project.createNewProject(
+        Project.create(
             name,
             description,
             categoryId
         )
 
-    private fun Project.save() = apply { projectRepository.save(this) }
+    private fun Project.save() = projectRepository.save(this)
 }

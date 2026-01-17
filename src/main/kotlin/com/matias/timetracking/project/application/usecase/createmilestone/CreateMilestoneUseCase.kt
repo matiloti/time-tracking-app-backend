@@ -10,14 +10,19 @@ class CreateMilestoneUseCase(private val projectRepository: ProjectRepository) {
         projectRepository
             .findById(request.projectId)
             ?.let { project ->
-                val newMilestone = project
+                project
                     .createNewMilestone(
                         request.name,
                         request.description,
                         request.startDate,
                         request.endDate
                     )
-                projectRepository.save(project)
-                CreateMilestoneResponse(newMilestone.id)
+                val savedProject = projectRepository.save(project)
+                CreateMilestoneResponse(
+                    savedProject
+                        .milestones()
+                        .maxWithOrNull { m1, m2 -> if (m1.createdAt >= m2.createdAt) 1 else 0 }
+                        ?.id!!
+                )
             } ?: throw ProjectIdNotFoundException(request.projectId)
 }
