@@ -8,6 +8,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
@@ -24,7 +26,7 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(NoResourceFoundException::class)
-    fun handleNoResourceFoundExceptionException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
@@ -40,7 +42,7 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(ProjectIdNotFoundException::class)
-    fun handleProjectIdNotFoundExceptionException(e: ProjectIdNotFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleProjectIdNotFoundException(e: ProjectIdNotFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
@@ -48,11 +50,30 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(DuplicatedProjectNameException::class)
-    fun handleDuplicatedProjectNameExceptionException(e: DuplicatedProjectNameException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleDuplicatedProjectNameException(e: DuplicatedProjectNameException, request: HttpServletRequest): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.CONFLICT)
             .body(ApiProjectErrorCodes.DUPLICATED_PROJECT_NAME.getApiError(e.message!!))
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException, request: HttpServletRequest): ResponseEntity<ApiError> {
+        logError(request, e)
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiProjectErrorCodes.INVALID_REQUEST_BODY.getApiError())
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleValidationException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ApiError> {
+        logError(request, e)
+        val errors = e.bindingResult.fieldErrors.associate {
+            it.field to (it.defaultMessage ?: "Invalid value")
+        }
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiGenericErrorCodes.PAYLOAD_VALIDATION_ERROR.getApiError(errors))
     }
 
     companion object {

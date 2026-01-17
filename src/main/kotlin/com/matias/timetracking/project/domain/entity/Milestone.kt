@@ -19,8 +19,14 @@ data class Milestone private constructor(
     init {
         if(name.isBlank())
             throw DomainException("Milestone name cannot be blank")
+        if(name.length > MAX_NAME_LENGTH)
+            throw DomainException("Milestone name length must be less than $MAX_NAME_LENGTH")
+        if(description != null && description.length > MAX_DESCRIPTION_LENGTH)
+            throw DomainException("Milestone description length must be less than $MAX_DESCRIPTION_LENGTH")
         if(endDate != null && startDate != null && endDate.isBefore(startDate))
-            throw DomainException("End date cannot be before start date")
+            throw DomainException("Milestone end date cannot be before start date")
+        if(updatedAt.isBefore(createdAt))
+            throw DomainException("Milestone update date cannot be before than creation date")
     }
 
     fun getCopy() = this.copy()
@@ -28,6 +34,9 @@ data class Milestone private constructor(
     fun updatedAt() = this.updatedAt
 
     companion object {
+        const val MAX_NAME_LENGTH = 50
+        const val MAX_DESCRIPTION_LENGTH = 500
+
         fun create(
             projectId: UUID,
             name: String,

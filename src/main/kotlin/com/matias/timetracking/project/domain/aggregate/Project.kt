@@ -17,11 +17,24 @@ data class Project private constructor(
     private val milestones: MutableList<Milestone>
 ) {
 
+    init {
+        if(name.isBlank())
+            throw DomainException("Project name cannot be blank")
+        if(name.length > MAX_NAME_LENGTH)
+            throw DomainException("Project name length must be less than $MAX_NAME_LENGTH")
+        if(description != null && description.length > MAX_DESCRIPTION_LENGTH)
+            throw DomainException("Project description length must be less than $MAX_DESCRIPTION_LENGTH")
+        if(categoryId < 0)
+            throw DomainException("Project category id must be greater than 0")
+        if(updatedAt.isBefore(createdAt))
+            throw DomainException("Project update date cannot be before than creation date")
+    }
+
     fun milestones(): List<Milestone> = milestones.toList()
 
     fun updatedAt() = this.updatedAt
 
-    fun createNewMilestone(
+    fun addNewMilestone(
         name: String,
         description: String?,
         startDate: LocalDate?,
@@ -55,6 +68,9 @@ data class Project private constructor(
     }
 
     companion object {
+        const val MAX_NAME_LENGTH = 50
+        const val MAX_DESCRIPTION_LENGTH = 500
+
         fun create(
             name: String,
             description: String?,

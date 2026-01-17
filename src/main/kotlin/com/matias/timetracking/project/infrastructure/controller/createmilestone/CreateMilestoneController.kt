@@ -3,6 +3,7 @@ package com.matias.timetracking.project.infrastructure.controller.createmileston
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneCommand
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneResponse
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneUseCase
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -15,7 +16,7 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
     @PostMapping
     fun createProject(
         @PathVariable projectId: UUID,
-        @RequestBody request: CreateMilestoneRequest
+        @Valid @RequestBody request: CreateMilestoneRequest
     ): ResponseEntity<Any> =
         createMilestoneUseCase
             .execute(request.mapToCommand(projectId))
