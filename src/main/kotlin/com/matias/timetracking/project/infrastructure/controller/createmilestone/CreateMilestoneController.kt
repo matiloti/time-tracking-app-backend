@@ -5,7 +5,6 @@ import com.matias.timetracking.common.infrastructure.ApiProjectErrorCodes
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneCommand
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneResponse
 import com.matias.timetracking.project.application.usecase.createmilestone.CreateMilestoneUseCase
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -34,12 +33,11 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
             endDate
         )
 
-    fun CreateMilestoneResponse.mapToResponse(projectId: UUID): ResponseEntity<Any> =
-        ResponseEntity.created(URI.create("/projects/${projectId}/milestones/${id}")).build()
-
-    @ExceptionHandler(EmptyResultDataAccessException::class)
-    fun handleNotFoundException() : ResponseEntity<Any> =
-        ResponseEntity
+    fun CreateMilestoneResponse?.mapToResponse(projectId: UUID): ResponseEntity<Any> =
+        if (this != null) ResponseEntity
+            .created(URI.create("/projects/${projectId}/milestones/${id}"))
+            .build()
+        else ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(
                 ApiError(

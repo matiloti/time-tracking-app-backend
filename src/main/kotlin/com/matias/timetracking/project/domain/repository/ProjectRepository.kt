@@ -5,6 +5,6 @@ import java.util.*
 
 interface ProjectRepository {
     fun save(project: Project)
-    fun findById(projectId: UUID): Project
+    fun findById(projectId: UUID): Project?
     fun findAll(): List<Project>
 }
