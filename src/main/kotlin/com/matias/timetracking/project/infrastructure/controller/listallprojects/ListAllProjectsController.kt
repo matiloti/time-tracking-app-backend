@@ -1,6 +1,6 @@
 package com.matias.timetracking.project.infrastructure.controller.listallprojects
 
-import com.matias.timetracking.project.infrastructure.repository.ProjectQueryRepository
+import com.matias.timetracking.project.infrastructure.repository.query.ProjectQueryRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

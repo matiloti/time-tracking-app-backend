@@ -84,7 +84,7 @@ class ProjectShould: EndToEndTest() {
         // THEN - milestone is correctly created
             .expectStatus().isCreated
             .expectHeader().exists("Location")
-            .expectHeader().valueMatches("location","${projectLocation}/milestones/.+")
+            .expectHeader().valueMatches("location","/milestones/.+")
 
         val projectId = UUID.fromString(projectLocation.split("/").last())
         with(projectRepository.findById(projectId)) {

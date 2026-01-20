@@ -1,7 +1,7 @@
 package com.matias.timetracking.project.infrastructure.controller.getprojectdetails
 
 import com.matias.timetracking.common.infrastructure.ApiProjectErrorCodes
-import com.matias.timetracking.project.infrastructure.repository.ProjectQueryRepository
+import com.matias.timetracking.project.infrastructure.repository.query.ProjectQueryRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

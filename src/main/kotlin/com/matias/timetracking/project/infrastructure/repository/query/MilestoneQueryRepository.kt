@@ -1,4 +1,4 @@
-package com.matias.timetracking.project.infrastructure.repository
+package com.matias.timetracking.project.infrastructure.repository.query
 
 import com.matias.timetracking.project.infrastructure.controller.getmilestonedetails.MilestoneDetailsDto
 import com.matias.timetracking.project.infrastructure.dao.MilestoneDao

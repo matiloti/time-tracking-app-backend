@@ -33,6 +33,6 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
 
     private fun CreateMilestoneResponse.mapToResponse(projectId: UUID): ResponseEntity<Any> =
         ResponseEntity
-            .created(URI.create("/projects/${projectId}/milestones/${id}"))
+            .created(URI.create("/milestones/${id}"))
             .build()
 }
