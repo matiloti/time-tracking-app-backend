@@ -20,7 +20,7 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
     ): ResponseEntity<Any> =
         createMilestoneUseCase
             .execute(request.mapToCommand(projectId))
-            .mapToResponse(projectId)
+            .mapToResponse()
 
     private fun CreateMilestoneRequest.mapToCommand(projectId: UUID): CreateMilestoneCommand =
         CreateMilestoneCommand(
@@ -31,7 +31,7 @@ class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCa
             endDate
         )
 
-    private fun CreateMilestoneResponse.mapToResponse(projectId: UUID): ResponseEntity<Any> =
+    private fun CreateMilestoneResponse.mapToResponse(): ResponseEntity<Any> =
         ResponseEntity
             .created(URI.create("/milestones/${id}"))
             .build()
