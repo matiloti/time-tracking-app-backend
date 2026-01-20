@@ -65,3 +65,34 @@ tasks.register<BootRun>("bootRunProd") {
 	// Set Spring profile to prod
 	systemProperty("spring.profiles.active", "prod")
 }
+
+tasks.register("installGitHooks") {
+	group = "help"
+	description = "Installs git hooks from scripts/ directory"
+
+	// Define source and destination
+	val scriptFile = file("scripts/pre-commit")
+	val gitHooksDir = file(".git/hooks")
+
+	// Only run if the project is a git repo
+	onlyIf { gitHooksDir.exists() }
+
+	doLast {
+		if (scriptFile.exists()) {
+			copy {
+				from(scriptFile)
+				into(gitHooksDir)
+			}
+			// Make the file executable
+			file("${gitHooksDir}/pre-commit").setExecutable(true)
+			println("Git pre-commit hook installed successfully.")
+		} else {
+			println("Warning: scripts/pre-commit not found. Hook not installed.")
+		}
+	}
+}
+
+// Optional: Ensure hooks are installed every time the build runs
+tasks.named("build") {
+	dependsOn("installGitHooks")
+}

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "Running Gradle tests..."
+
+./gradlew test
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+  echo "❌ Tests failed. Commit aborted."
+  exit 1
+fi
+
+echo "✅ Tests passed."
+exit 0
