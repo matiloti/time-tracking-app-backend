@@ -1,6 +1,8 @@
 package com.matias.timetracking.project.domain.aggregate
 
+import com.matias.timetracking.project.domain.Priority
 import com.matias.timetracking.project.domain.entity.Milestone
+import com.matias.timetracking.project.domain.entity.Task
 import com.matias.timetracking.project.domain.exception.DomainException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -32,6 +34,10 @@ data class Project private constructor(
 
     fun milestones(): List<Milestone> = milestones.toList()
 
+    fun milestoneTasks(milestoneId: UUID): List<Task>? = milestones.find { it.id == milestoneId }?.tasks()
+
+    fun allMilestoneTasks() = milestones.flatMap { it.tasks() }
+
     fun updatedAt() = this.updatedAt
 
     fun addNewMilestone(
@@ -57,7 +63,8 @@ data class Project private constructor(
             name = name,
             description = description,
             startDate = startDate,
-            endDate = endDate
+            endDate = endDate,
+            mutableListOf()
         )
 
         milestones.add(newMilestone)
@@ -65,6 +72,28 @@ data class Project private constructor(
         updatedAt = LocalDateTime.now()
 
         return newMilestone.getCopy()
+    }
+
+    fun addTaskToMilestone(
+        name: String,
+        description: String?,
+        priority: Int,
+        milestoneId: UUID,
+    ) : Task {
+        val milestone = milestones.find { it.id == milestoneId }
+        if(milestone == null)
+            throw DomainException("This milestone is not contained in this project")
+
+        val newTask = milestone.addTask(
+            name = name,
+            description = description,
+            priority = Priority.parse(priority) ?: throw DomainException("Task '$name' with invalid priority value"),
+            false
+        )
+
+        updatedAt = LocalDateTime.now()
+
+        return newTask
     }
 
     companion object {

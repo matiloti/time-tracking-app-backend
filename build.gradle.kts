@@ -92,7 +92,6 @@ tasks.register("installGitHooks") {
 	}
 }
 
-// Optional: Ensure hooks are installed every time the build runs
 tasks.named("build") {
 	dependsOn("installGitHooks")
 }

@@ -1,11 +1,14 @@
 package com.matias.timetracking.project.e2e
 
 import com.matias.timetracking.helper.EndToEndTest
+import com.matias.timetracking.project.domain.Priority
 import com.matias.timetracking.project.domain.repository.ProjectRepository
 import com.matias.timetracking.project.infrastructure.controller.createmilestone.CreateMilestoneRequest
 import com.matias.timetracking.project.infrastructure.controller.createproject.CreateProjectRequest
+import com.matias.timetracking.project.infrastructure.controller.createtask.CreateTaskRequest
 import com.matias.timetracking.project.infrastructure.dao.MilestoneDao
 import com.matias.timetracking.project.infrastructure.dao.ProjectDao
+import com.matias.timetracking.project.infrastructure.dao.TaskDao
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -34,14 +37,19 @@ class ProjectShould: EndToEndTest() {
     @Autowired
     lateinit var milestoneDao: MilestoneDao
 
+    @Autowired
+    lateinit var taskDao: TaskDao
+
     @AfterEach
     fun cleanUp() {
         projectDao.deleteAll()
         milestoneDao.deleteAll()
+        taskDao.deleteAll()
     }
 
     @Test
-    fun `create new project and add new milestone happy path`() {
+    fun `create project with milestone and task happy path`() {
+        // PROJECT --------------------
         // WHEN - empty DB
 
         // GIVEN - create new project
@@ -67,18 +75,20 @@ class ProjectShould: EndToEndTest() {
             .get("Location")
             ?.first()
         assertNotNull(projectLocation)
+        val createdProjectId = UUID.fromString(projectLocation.split("/").last())
 
+        // MILESTONE --------------------
         // WHEN - create new milestone in existing project
-        val request = CreateMilestoneRequest(
+        val milestoneRequest = CreateMilestoneRequest(
             name = "First milestone",
             description = "This milestone must have...",
             startDate = LocalDate.now(),
             endDate = LocalDate.now().plusDays(7)
         )
-        restTestClient
+        val milestoneCreateResponse = restTestClient
             .post()
             .uri("http://localhost:$port${projectLocation}/milestones")
-            .body(request)
+            .body(milestoneRequest)
             .exchange()
 
         // THEN - milestone is correctly created
@@ -86,15 +96,50 @@ class ProjectShould: EndToEndTest() {
             .expectHeader().exists("Location")
             .expectHeader().valueMatches("location","/milestones/.+")
 
-        val projectId = UUID.fromString(projectLocation.split("/").last())
-        with(projectRepository.findById(projectId)) {
+        val milestoneLocation = milestoneCreateResponse
+            .returnResult()
+            .responseHeaders
+            .get("Location")
+            ?.first()
+        assertNotNull(milestoneLocation)
+        val createdMilestoneId = UUID.fromString(milestoneLocation.split("/").last())
+
+        // TASK --------------------
+        // WHEN - create new task in existing milestone
+        val taskRequest = CreateTaskRequest(
+            name = "To check if this test works",
+            description = "This test should work pls",
+            priority = Priority.HIGH.value
+        )
+        restTestClient
+            .post()
+            .uri("http://localhost:$port${milestoneLocation}/tasks")
+            .body(taskRequest)
+            .exchange()
+
+        // THEN - task is correctly created
+            .expectStatus().isCreated
+            .expectHeader().exists("Location")
+            .expectHeader().valueMatches("location","/tasks/.+")
+
+        // ALL --------------------
+        // Lastly, check everything is ok
+        with(projectRepository.findById(createdProjectId)) {
             assertNotNull(this)
             assertTrue(milestones().isNotEmpty())
             with(milestones().first()) {
-                assertEquals(name, request.name)
-                assertEquals(description, request.description)
-                assertEquals(startDate, request.startDate)
-                assertEquals(endDate, request.endDate)
+                assertEquals(this.projectId, createdProjectId)
+                assertEquals(this.name, milestoneRequest.name)
+                assertEquals(this.description, milestoneRequest.description)
+                assertEquals(this.startDate, milestoneRequest.startDate)
+                assertEquals(this.endDate, milestoneRequest.endDate)
+                with(this.tasks().first()) {
+                    assertEquals(this.milestoneId, createdMilestoneId)
+                    assertEquals(this.name, taskRequest.name)
+                    assertEquals(this.description, taskRequest.description)
+                    assertEquals(this.priority.value, taskRequest.priority)
+                    assertEquals(this.completed, false)
+                }
             }
         }
     }

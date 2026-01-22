@@ -6,5 +6,5 @@ import java.util.*
 interface ProjectRepository {
     fun save(project: Project): Project
     fun findById(projectId: UUID): Project?
-    fun findAll(): List<Project>
+    fun findByMilestoneId(milestoneId: UUID): Project?
 }

@@ -1,5 +1,6 @@
 package com.matias.timetracking.project.domain.entity
 
+import com.matias.timetracking.project.domain.Priority
 import com.matias.timetracking.project.domain.exception.DomainException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -15,6 +16,7 @@ data class Milestone private constructor(
     val endDate: LocalDate?,
     val createdAt: LocalDateTime,
     private var updatedAt: LocalDateTime,
+    private val tasks: MutableList<Task>
 ) {
     init {
         if(name.isBlank())
@@ -33,6 +35,32 @@ data class Milestone private constructor(
 
     fun updatedAt() = this.updatedAt
 
+    fun addTask(
+        name: String,
+        description: String?,
+        priority: Priority,
+        completed: Boolean,
+    ): Task {
+        if(tasks.any { it.name == name })
+            throw DomainException("A milestone cannot have two tasks with the same name")
+
+        val newTask = Task.create(
+            milestoneId = id!!, // TODO check this
+            name = name,
+            description = description,
+            priority = priority,
+            completed = completed,
+        )
+
+        tasks.add(newTask)
+
+        updatedAt = LocalDateTime.now()
+
+        return newTask.getCopy()
+    }
+
+    fun tasks() = this.tasks.map { it.getCopy() }.toList()
+
     companion object {
         const val MAX_NAME_LENGTH = 50
         const val MAX_DESCRIPTION_LENGTH = 500
@@ -42,7 +70,8 @@ data class Milestone private constructor(
             name: String,
             description: String?,
             startDate: LocalDate?,
-            endDate: LocalDate?
+            endDate: LocalDate?,
+            tasks: MutableList<Task>
         ) = Milestone(
                 projectId = projectId,
                 name = name,
@@ -50,7 +79,8 @@ data class Milestone private constructor(
                 startDate = startDate,
                 endDate = endDate,
                 createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
+                updatedAt = LocalDateTime.now(),
+                tasks = tasks
             )
 
         fun load(
@@ -61,7 +91,8 @@ data class Milestone private constructor(
             startDate: LocalDate?,
             endDate: LocalDate?,
             createdAt: LocalDateTime,
-            updatedAt: LocalDateTime
+            updatedAt: LocalDateTime,
+            tasks: MutableList<Task>
         ) = Milestone(
                 id = id,
                 projectId = projectId,
@@ -70,7 +101,8 @@ data class Milestone private constructor(
                 startDate = startDate,
                 endDate = endDate,
                 createdAt = createdAt,
-                updatedAt = updatedAt
+                updatedAt = updatedAt,
+                tasks = tasks
             )
     }
 }
