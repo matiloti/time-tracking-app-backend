@@ -20,11 +20,13 @@ data class Task private constructor(
         if(name.isBlank())
             throw DomainException("Task name cannot be blank")
         if(name.length > MAX_NAME_LENGTH)
-            throw DomainException("Task name length must be less than $MAX_NAME_LENGTH")
+            throw DomainException("Task '$name' name length must be less than $MAX_NAME_LENGTH")
         if(description != null && description.length > MAX_DESCRIPTION_LENGTH)
-            throw DomainException("Task description length must be less than $MAX_DESCRIPTION_LENGTH")
+            throw DomainException("Task '$name' description length must be less than $MAX_DESCRIPTION_LENGTH")
+        if(priority.isInvalid())
+            throw DomainException("Task '$name' with invalid priority value")
         if(updatedAt.isBefore(createdAt))
-            throw DomainException("Task update date cannot be before than creation date")
+            throw DomainException("Task '$name' update date cannot be before than creation date")
     }
 
     fun id(): UUID? = id?.let { UUID.fromString(it.toString()) }
@@ -85,7 +87,7 @@ data class Task private constructor(
             milestoneId = milestoneId,
             name = name.trim(),
             description = description?.trim().takeIf { !it.isNullOrBlank() },
-            priority = Priority.parse(priorityValue) ?: throw DomainException("Task '$name' with invalid priority value"),
+            priority = Priority.parse(priorityValue),
             completed = completed,
             createdAt = createdAt,
             updatedAt = updatedAt

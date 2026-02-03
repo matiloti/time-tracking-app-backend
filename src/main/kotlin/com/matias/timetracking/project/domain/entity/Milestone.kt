@@ -38,7 +38,7 @@ data class Milestone private constructor(
     fun addTask(
         name: String,
         description: String?,
-        priority: Priority,
+        priorityId: Int,
         completed: Boolean,
     ): Task {
         if(tasks.any { it.name == name })
@@ -48,7 +48,7 @@ data class Milestone private constructor(
             milestoneId = id!!, // TODO check this
             name = name,
             description = description,
-            priority = priority,
+            priority = Priority.parse(priorityId),
             completed = completed,
         )
 

@@ -109,7 +109,7 @@ class ProjectShould: EndToEndTest() {
         val taskRequest = CreateTaskRequest(
             name = "To check if this test works",
             description = "This test should work pls",
-            priority = Priority.HIGH.value
+            priorityId = Priority.HIGH.value
         )
         restTestClient
             .post()
@@ -137,7 +137,7 @@ class ProjectShould: EndToEndTest() {
                     assertEquals(this.milestoneId, createdMilestoneId)
                     assertEquals(this.name, taskRequest.name)
                     assertEquals(this.description, taskRequest.description)
-                    assertEquals(this.priority.value, taskRequest.priority)
+                    assertEquals(this.priority.value, taskRequest.priorityId)
                     assertEquals(this.completed, false)
                 }
             }

@@ -1,6 +1,5 @@
 package com.matias.timetracking.project.domain.aggregate
 
-import com.matias.timetracking.project.domain.Priority
 import com.matias.timetracking.project.domain.entity.Milestone
 import com.matias.timetracking.project.domain.entity.Task
 import com.matias.timetracking.project.domain.exception.DomainException
@@ -77,7 +76,7 @@ data class Project private constructor(
     fun addTaskToMilestone(
         name: String,
         description: String?,
-        priority: Int,
+        priorityId: Int,
         milestoneId: UUID,
     ) : Task {
         val milestone = milestones.find { it.id == milestoneId }
@@ -87,7 +86,7 @@ data class Project private constructor(
         val newTask = milestone.addTask(
             name = name,
             description = description,
-            priority = Priority.parse(priority) ?: throw DomainException("Task '$name' with invalid priority value"),
+            priorityId = priorityId,
             false
         )
 

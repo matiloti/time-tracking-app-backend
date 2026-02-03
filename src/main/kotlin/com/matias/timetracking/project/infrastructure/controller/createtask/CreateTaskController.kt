@@ -26,7 +26,7 @@ class CreateTaskController(private val createTaskUseCase: CreateTaskUseCase) {
         CreateTaskCommand(
             name = name,
             description = description,
-            priority = priority,
+            priority = priorityId,
             milestoneId = milestoneId
         )
 

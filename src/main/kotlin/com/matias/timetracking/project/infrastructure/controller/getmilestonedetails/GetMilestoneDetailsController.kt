@@ -23,5 +23,5 @@ class GetMilestoneDetailsController(val milestoneQueryRepository: MilestoneQuery
         if (this != null) ResponseEntity.ok(this)
         else ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(ApiProjectErrorCodes.PROJECT_ID_NOT_FOUND.getApiError())
+            .body(ApiProjectErrorCodes.MILESTONE_ID_NOT_FOUND.getApiError())
 }
