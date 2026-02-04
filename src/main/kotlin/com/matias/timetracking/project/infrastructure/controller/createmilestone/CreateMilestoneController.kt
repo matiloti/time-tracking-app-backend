@@ -14,7 +14,7 @@ import java.util.*
 class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCase) {
 
     @PostMapping
-    fun createProject(
+    fun createMilestone(
         @PathVariable projectId: UUID,
         @Valid @RequestBody request: CreateMilestoneRequest
     ): ResponseEntity<Any> =
