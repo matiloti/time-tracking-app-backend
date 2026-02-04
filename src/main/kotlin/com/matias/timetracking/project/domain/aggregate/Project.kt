@@ -31,7 +31,7 @@ data class Project private constructor(
             throw DomainException("Project update date cannot be before than creation date")
     }
 
-    fun milestones(): List<Milestone> = milestones.toList()
+    fun milestones(): List<Milestone> = milestones.map { it.getCopy() }
 
     fun milestoneTasks(milestoneId: UUID): List<Task>? = milestones.find { it.id == milestoneId }?.tasks()
 

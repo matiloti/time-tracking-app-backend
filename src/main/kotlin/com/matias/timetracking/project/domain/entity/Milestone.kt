@@ -59,7 +59,7 @@ data class Milestone private constructor(
         return newTask.getCopy()
     }
 
-    fun tasks() = this.tasks.map { it.getCopy() }.toList()
+    fun tasks() = this.tasks.map { it.getCopy() }
 
     companion object {
         const val MAX_NAME_LENGTH = 100
