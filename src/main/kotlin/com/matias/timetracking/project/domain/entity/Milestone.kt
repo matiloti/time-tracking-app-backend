@@ -74,8 +74,8 @@ data class Milestone private constructor(
             tasks: MutableList<Task>
         ) = Milestone(
                 projectId = projectId,
-                name = name,
-                description = description,
+                name = name.trim(),
+                description = description?.trim().takeIf { !it.isNullOrBlank() },
                 startDate = startDate,
                 endDate = endDate,
                 createdAt = LocalDateTime.now(),

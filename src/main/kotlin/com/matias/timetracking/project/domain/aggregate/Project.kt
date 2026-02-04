@@ -104,8 +104,8 @@ data class Project private constructor(
             description: String?,
             categoryId: Int
         ) = Project(
-                name = name,
-                description = description,
+                name = name.trim(),
+                description = description?.trim().takeIf { !it.isNullOrBlank() },
                 categoryId = categoryId,
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now(),
