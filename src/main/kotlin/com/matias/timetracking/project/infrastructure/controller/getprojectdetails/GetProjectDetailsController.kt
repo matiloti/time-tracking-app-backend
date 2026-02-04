@@ -12,7 +12,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/projects")
-class GetProjectDetailsController(val projectQueryRepository: ProjectQueryRepository) {
+class GetProjectDetailsController(private val projectQueryRepository: ProjectQueryRepository) {
     @GetMapping("/{projectId}/details")
     fun getProjectDetails(@PathVariable projectId: UUID): ResponseEntity<Any> =
         projectQueryRepository

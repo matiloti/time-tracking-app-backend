@@ -11,7 +11,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/projects/{projectId}/milestones")
-class CreateMilestoneController(val createMilestoneUseCase: CreateMilestoneUseCase) {
+class CreateMilestoneController(private val createMilestoneUseCase: CreateMilestoneUseCase) {
 
     @PostMapping
     fun createMilestone(

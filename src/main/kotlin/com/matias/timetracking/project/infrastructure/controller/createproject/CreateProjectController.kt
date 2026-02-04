@@ -13,7 +13,7 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/projects")
-class CreateProjectController(val createProjectUseCase: CreateProjectUseCase) {
+class CreateProjectController(private val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
     fun createProject(@Valid @RequestBody request: CreateProjectRequest): ResponseEntity<Any> =

@@ -12,7 +12,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/tasks")
-class GetTaskDetailsController(val taskQueryRepository: TaskQueryRepository) {
+class GetTaskDetailsController(private val taskQueryRepository: TaskQueryRepository) {
     @GetMapping("/{taskId}/details")
     fun getProjectDetails(@PathVariable taskId: UUID): ResponseEntity<Any> =
         taskQueryRepository

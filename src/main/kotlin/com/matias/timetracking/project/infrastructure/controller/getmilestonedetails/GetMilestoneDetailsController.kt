@@ -12,7 +12,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/milestones")
-class GetMilestoneDetailsController(val milestoneQueryRepository: MilestoneQueryRepository) {
+class GetMilestoneDetailsController(private val milestoneQueryRepository: MilestoneQueryRepository) {
     @GetMapping("/{milestoneId}/details")
     fun getProjectDetails(@PathVariable milestoneId: UUID): ResponseEntity<Any> =
         milestoneQueryRepository

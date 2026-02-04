@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/projects")
-class ListAllProjectsController(val projectQueryRepository: ProjectQueryRepository) {
+class ListAllProjectsController(private val projectQueryRepository: ProjectQueryRepository) {
     @GetMapping("/listAll")
     fun listAll(): ResponseEntity<List<ProjectListItemResponse>> =
         projectQueryRepository
