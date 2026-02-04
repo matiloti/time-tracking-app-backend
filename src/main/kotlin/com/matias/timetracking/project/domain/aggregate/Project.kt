@@ -39,7 +39,7 @@ data class Project private constructor(
 
     fun updatedAt() = this.updatedAt
 
-    fun addNewMilestone(
+    fun addMilestone(
         name: String,
         description: String?,
         startDate: LocalDate?,

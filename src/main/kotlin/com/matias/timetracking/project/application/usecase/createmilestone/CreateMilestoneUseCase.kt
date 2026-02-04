@@ -11,7 +11,7 @@ class CreateMilestoneUseCase(private val projectRepository: ProjectRepository) {
             .findById(command.projectId)
             ?.let { project ->
                 project
-                    .addNewMilestone(
+                    .addMilestone(
                         command.name,
                         command.description,
                         command.startDate,
