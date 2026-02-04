@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class CreateMilestoneUseCase(private val projectRepository: ProjectRepository) {
-    fun execute(request: CreateMilestoneCommand): CreateMilestoneResponse =
+    fun execute(command: CreateMilestoneCommand): CreateMilestoneResponse =
         projectRepository
-            .findById(request.projectId)
+            .findById(command.projectId)
             ?.let { project ->
                 project
                     .addNewMilestone(
-                        request.name,
-                        request.description,
-                        request.startDate,
-                        request.endDate
+                        command.name,
+                        command.description,
+                        command.startDate,
+                        command.endDate
                     )
                 val savedProject = projectRepository.save(project)
                 CreateMilestoneResponse(
@@ -24,5 +24,5 @@ class CreateMilestoneUseCase(private val projectRepository: ProjectRepository) {
                         .maxWithOrNull { m1, m2 -> if (m1.createdAt >= m2.createdAt) 1 else 0 }
                         ?.id!!
                 )
-            } ?: throw ProjectIdNotFoundException(request.projectId)
+            } ?: throw ProjectIdNotFoundException(command.projectId)
 }
