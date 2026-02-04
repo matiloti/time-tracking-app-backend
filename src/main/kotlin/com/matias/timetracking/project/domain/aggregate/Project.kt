@@ -96,7 +96,7 @@ data class Project private constructor(
     }
 
     companion object {
-        const val MAX_NAME_LENGTH = 50
+        const val MAX_NAME_LENGTH = 100
         const val MAX_DESCRIPTION_LENGTH = 500
 
         fun create(

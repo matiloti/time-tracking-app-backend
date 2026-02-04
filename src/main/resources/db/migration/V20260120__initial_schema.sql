@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS categories (
 
 CREATE TABLE IF NOT EXISTS projects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(100) UNIQUE NOT NULL,
   description VARCHAR(500),
   category_id INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS projects (
 CREATE TABLE IF NOT EXISTS milestones (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     description VARCHAR(500),
     start_date DATE,
     end_date DATE,
