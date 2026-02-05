@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
@@ -5,6 +6,7 @@ plugins {
 	kotlin("plugin.spring") version "2.2.21"
 	id("org.springframework.boot") version "4.0.1"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 group = "com.matias"
@@ -39,11 +41,26 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers-junit-jupiter")
 	testImplementation("org.testcontainers:testcontainers-postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
 }
 
 kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+	}
+}
+
+detekt {
+	buildUponDefaultConfig = true
+	allRules = false
+}
+
+tasks.withType<Detekt>().configureEach {
+	jvmTarget = "21"
+	reports {
+		html.required.set(true)
+		xml.required.set(false)
+		txt.required.set(false)
 	}
 }
 
