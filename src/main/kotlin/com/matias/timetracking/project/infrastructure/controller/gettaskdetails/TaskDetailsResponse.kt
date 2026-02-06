@@ -1,6 +1,6 @@
 package com.matias.timetracking.project.infrastructure.controller.gettaskdetails
 
-import com.matias.timetracking.project.domain.Priority
+import com.matias.timetracking.project.domain.enums.Priority
 import java.time.LocalDate
 import java.util.*
 

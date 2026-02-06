@@ -27,7 +27,7 @@ class ProjectRepositoryAdapter(
             id = project.id,
             name = project.name,
             description = project.description,
-            categoryId = project.categoryId,
+            categoryId = project.category.id,
             createdAt = project.createdAt,
             updatedAt = project.updatedAt()
         )
@@ -47,7 +47,7 @@ class ProjectRepositoryAdapter(
                     milestoneId = task.milestoneId,
                     name = task.name,
                     description = task.description,
-                    priorityId = task.priority.value,
+                    priorityId = task.priority.id,
                     completed = task.completed,
                     createdAt = task.createdAt,
                     updatedAt = task.updatedAt
@@ -61,7 +61,7 @@ class ProjectRepositoryAdapter(
                 milestoneId = task.milestoneId,
                 name = task.name,
                 description = task.description,
-                priorityId = task.priority.value,
+                priorityId = task.priority.id,
                 completed = task.completed,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt

@@ -1,7 +1,7 @@
 package com.matias.timetracking.project.e2e
 
 import com.matias.timetracking.helper.EndToEndTest
-import com.matias.timetracking.project.domain.Priority
+import com.matias.timetracking.project.domain.enums.Priority
 import com.matias.timetracking.project.domain.repository.ProjectRepository
 import com.matias.timetracking.project.infrastructure.controller.createmilestone.CreateMilestoneRequest
 import com.matias.timetracking.project.infrastructure.controller.createproject.CreateProjectRequest
@@ -109,7 +109,7 @@ class ProjectShould: EndToEndTest() {
         val taskRequest = CreateTaskRequest(
             name = "To check if this test works",
             description = "This test should work pls",
-            priorityId = Priority.HIGH.value
+            priorityId = Priority.HIGH.id
         )
         restTestClient
             .post()
@@ -137,7 +137,7 @@ class ProjectShould: EndToEndTest() {
                     assertEquals(this.milestoneId, createdMilestoneId)
                     assertEquals(this.name, taskRequest.name)
                     assertEquals(this.description, taskRequest.description)
-                    assertEquals(this.priority.value, taskRequest.priorityId)
+                    assertEquals(this.priority.id, taskRequest.priorityId)
                     assertEquals(this.completed, false)
                 }
             }

@@ -1,6 +1,6 @@
 package com.matias.timetracking.project.domain.entity
 
-import com.matias.timetracking.project.domain.Priority
+import com.matias.timetracking.project.domain.enums.Priority
 import com.matias.timetracking.project.domain.exception.DomainException
 import java.time.LocalDateTime
 import java.util.*

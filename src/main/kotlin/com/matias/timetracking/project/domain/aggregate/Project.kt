@@ -2,6 +2,7 @@ package com.matias.timetracking.project.domain.aggregate
 
 import com.matias.timetracking.project.domain.entity.Milestone
 import com.matias.timetracking.project.domain.entity.Task
+import com.matias.timetracking.project.domain.enums.Category
 import com.matias.timetracking.project.domain.exception.DomainException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -12,7 +13,7 @@ data class Project private constructor(
     val id: UUID? = null,
     val name: String,
     val description: String? = null,
-    val categoryId: Int,
+    val category: Category,
     val createdAt: LocalDateTime,
     private var updatedAt: LocalDateTime,
     private val milestones: MutableList<Milestone>
@@ -25,8 +26,8 @@ data class Project private constructor(
             throw DomainException("Project name length must be less than $MAX_NAME_LENGTH")
         if(description != null && description.length > MAX_DESCRIPTION_LENGTH)
             throw DomainException("Project description length must be less than $MAX_DESCRIPTION_LENGTH")
-        if(categoryId < 0)
-            throw DomainException("Project category id must be greater than 0")
+        if(category.isInvalid())
+            throw DomainException("Project category is not valid")
         if(updatedAt.isBefore(createdAt))
             throw DomainException("Project update date cannot be before than creation date")
     }
@@ -102,11 +103,11 @@ data class Project private constructor(
         fun create(
             name: String,
             description: String?,
-            categoryId: Int
+            category: Category
         ) = Project(
                 name = name.trim(),
                 description = description?.trim().takeIf { !it.isNullOrBlank() },
-                categoryId = categoryId,
+                category = category,
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now(),
                 milestones = mutableListOf()
@@ -115,7 +116,7 @@ data class Project private constructor(
         fun load(
             id: UUID, name: String,
             description: String?,
-            categoryId: Int,
+            category: Category,
             createdAt: LocalDateTime,
             updatedAt: LocalDateTime,
             milestones: MutableList<Milestone>
@@ -123,7 +124,7 @@ data class Project private constructor(
                 id = id,
                 name = name,
                 description = description,
-                categoryId = categoryId,
+                category = category,
                 createdAt = createdAt,
                 updatedAt = updatedAt,
                 milestones = milestones

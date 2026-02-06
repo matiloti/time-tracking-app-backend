@@ -1,11 +1,9 @@
 package com.matias.timetracking.project.infrastructure.repository.query
 
-import com.matias.timetracking.project.domain.Priority
-import com.matias.timetracking.project.infrastructure.controller.getmilestonedetails.MilestoneDetailsDto
+import com.matias.timetracking.project.domain.enums.Priority
 import com.matias.timetracking.project.infrastructure.controller.gettaskdetails.PriorityDto
 import com.matias.timetracking.project.infrastructure.controller.gettaskdetails.TaskDetailsDto
 import com.matias.timetracking.project.infrastructure.dao.MilestoneDao
-import com.matias.timetracking.project.infrastructure.dao.ProjectDao
 import com.matias.timetracking.project.infrastructure.dao.TaskDao
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -28,7 +26,7 @@ class TaskQueryRepository(
                             name = taskRow.name,
                             description = taskRow.description,
                             priority = PriorityDto(
-                                id = Priority.parse(taskRow.priorityId).value,
+                                id = Priority.parse(taskRow.priorityId).id,
                                 name = Priority.parse(taskRow.priorityId).name
                             ),
                             completed = taskRow.completed,

@@ -1,6 +1,7 @@
 package com.matias.timetracking.project.application.usecase.createproject
 
 import com.matias.timetracking.project.domain.aggregate.Project
+import com.matias.timetracking.project.domain.enums.Category
 import com.matias.timetracking.project.domain.exception.DuplicatedProjectNameException
 import com.matias.timetracking.project.domain.repository.ProjectRepository
 import org.springframework.dao.DuplicateKeyException
@@ -26,7 +27,7 @@ class CreateProjectUseCase(private val projectRepository: ProjectRepository) {
         Project.create(
             name,
             description,
-            categoryId
+            Category.parse(categoryId)
         )
 
     private fun Project.save() = projectRepository.save(this)

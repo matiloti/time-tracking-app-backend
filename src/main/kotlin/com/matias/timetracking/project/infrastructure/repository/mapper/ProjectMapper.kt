@@ -3,6 +3,7 @@ package com.matias.timetracking.project.infrastructure.repository.mapper
 import com.matias.timetracking.project.domain.aggregate.Project
 import com.matias.timetracking.project.domain.entity.Milestone
 import com.matias.timetracking.project.domain.entity.Task
+import com.matias.timetracking.project.domain.enums.Category
 import com.matias.timetracking.project.infrastructure.dao.row.MilestoneRow
 import com.matias.timetracking.project.infrastructure.dao.row.ProjectRow
 import com.matias.timetracking.project.infrastructure.dao.row.TaskRow
@@ -15,7 +16,7 @@ class ProjectMapper {
                 projectRow.id!!,
                 projectRow.name,
                 projectRow.description,
-                projectRow.categoryId,
+                Category.parse(projectRow.categoryId),
                 projectRow.createdAt,
                 projectRow.updatedAt,
                 milestoneRows.map { milestoneRow ->
