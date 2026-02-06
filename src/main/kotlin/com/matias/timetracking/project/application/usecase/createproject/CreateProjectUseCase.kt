@@ -9,26 +9,24 @@ import org.springframework.stereotype.Service
 
 @Service
 class CreateProjectUseCase(private val projectRepository: ProjectRepository) {
-    fun execute(command: CreateProjectCommand): CreateProjectResponse =
-        command
-            .createProjectFromRequest()
-            .runCatching { this.save() }
-            .fold(
-                onSuccess = { CreateProjectResponse(it.id!!) },
-                onFailure = { e ->
-                    when(e) {
-                        is DuplicateKeyException -> throw DuplicatedProjectNameException(command.name)
-                        else -> throw e
-                    }
+    fun execute(command: CreateProjectCommand): CreateProjectResponse = command
+        .createProjectFromRequest()
+        .runCatching { this.save() }
+        .fold(
+            onSuccess = { CreateProjectResponse(it.id!!) },
+            onFailure = { e ->
+                when (e) {
+                    is DuplicateKeyException -> throw DuplicatedProjectNameException(command.name)
+                    else -> throw e
                 }
-            )
-
-    private fun CreateProjectCommand.createProjectFromRequest() =
-        Project.create(
-            name,
-            description,
-            Category.parse(categoryId)
+            },
         )
+
+    private fun CreateProjectCommand.createProjectFromRequest() = Project.create(
+        name,
+        description,
+        Category.parse(categoryId),
+    )
 
     private fun Project.save() = projectRepository.save(this)
 }

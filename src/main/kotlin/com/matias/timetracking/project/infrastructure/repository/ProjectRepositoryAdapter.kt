@@ -2,11 +2,15 @@ package com.matias.timetracking.project.infrastructure.repository
 
 import com.matias.timetracking.project.domain.aggregate.Project
 import com.matias.timetracking.project.domain.repository.ProjectRepository
-import com.matias.timetracking.project.infrastructure.dao.*
+import com.matias.timetracking.project.infrastructure.dao.JdbcMilestoneDao
+import com.matias.timetracking.project.infrastructure.dao.JdbcTaskDao
+import com.matias.timetracking.project.infrastructure.dao.MilestoneDao
+import com.matias.timetracking.project.infrastructure.dao.ProjectDao
+import com.matias.timetracking.project.infrastructure.dao.TaskDao
 import com.matias.timetracking.project.infrastructure.dao.row.MilestoneRow
 import com.matias.timetracking.project.infrastructure.dao.row.ProjectRow
 import com.matias.timetracking.project.infrastructure.dao.row.TaskRow
-import com.matias.timetracking.project.infrastructure.repository.mapper.ProjectMapper.Companion.loadDomainObject
+import com.matias.timetracking.project.infrastructure.repository.mapper.ProjectMapper.loadDomainObject
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -18,8 +22,8 @@ class ProjectRepositoryAdapter(
     private val milestoneDao: MilestoneDao,
     private val jdbcMilestoneDao: JdbcMilestoneDao,
     private val taskDao: TaskDao,
-    private val jdbcTaskDao: JdbcTaskDao
-): ProjectRepository {
+    private val jdbcTaskDao: JdbcTaskDao,
+) : ProjectRepository {
 
     @Transactional
     override fun save(project: Project): Project {
@@ -29,7 +33,7 @@ class ProjectRepositoryAdapter(
             description = project.description,
             categoryId = project.category.id,
             createdAt = project.createdAt,
-            updatedAt = project.updatedAt()
+            updatedAt = project.updatedAt(),
         )
         projectDao.save(savedProjectRow)
 
@@ -50,8 +54,8 @@ class ProjectRepositoryAdapter(
                     priorityId = task.priority.id,
                     completed = task.completed,
                     createdAt = task.createdAt,
-                    updatedAt = task.updatedAt
-                )
+                    updatedAt = task.updatedAt,
+                ),
             )
         }.toMutableList()
 
@@ -64,7 +68,7 @@ class ProjectRepositoryAdapter(
                 priorityId = task.priority.id,
                 completed = task.completed,
                 createdAt = task.createdAt,
-                updatedAt = task.updatedAt
+                updatedAt = task.updatedAt,
             )
         }
         jdbcTaskDao.batchUpdate(updatedTasks)
@@ -85,8 +89,8 @@ class ProjectRepositoryAdapter(
                     startDate = milestone.startDate,
                     endDate = milestone.endDate,
                     createdAt = milestone.createdAt,
-                    updatedAt = milestone.updatedAt()
-                )
+                    updatedAt = milestone.updatedAt(),
+                ),
             )
         }.toMutableList()
 
@@ -99,7 +103,7 @@ class ProjectRepositoryAdapter(
                 startDate = milestone.startDate,
                 endDate = milestone.endDate,
                 createdAt = milestone.createdAt,
-                updatedAt = milestone.updatedAt()
+                updatedAt = milestone.updatedAt(),
             )
         }
         jdbcMilestoneDao.batchUpdate(updatedMilestones)
@@ -108,19 +112,17 @@ class ProjectRepositoryAdapter(
         return insertedMilestones
     }
 
-    override fun findById(projectId: UUID): Project? =
-        projectDao
-            .findByIdOrNull(projectId)
-            ?.let { projectRow ->
-                val milestoneRows = milestoneDao.findByProjectId(projectId)
-                val taskRows = taskDao.findAllByProjectId(projectId)
-                loadDomainObject(projectRow, milestoneRows, taskRows)
-            }
+    override fun findById(projectId: UUID): Project? = projectDao
+        .findByIdOrNull(projectId)
+        ?.let { projectRow ->
+            val milestoneRows = milestoneDao.findByProjectId(projectId)
+            val taskRows = taskDao.findAllByProjectId(projectId)
+            loadDomainObject(projectRow, milestoneRows, taskRows)
+        }
 
-    override fun findByMilestoneId(milestoneId: UUID): Project? =
-        milestoneDao
-            .getMilestoneProjectId(milestoneId)
-            ?.let { projectId ->
-                this.findById(projectId)
-            }
+    override fun findByMilestoneId(milestoneId: UUID): Project? = milestoneDao
+        .getMilestoneProjectId(milestoneId)
+        ?.let { projectId ->
+            this.findById(projectId)
+        }
 }

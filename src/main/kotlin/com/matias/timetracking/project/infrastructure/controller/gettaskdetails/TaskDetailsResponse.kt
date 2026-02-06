@@ -1,7 +1,5 @@
 package com.matias.timetracking.project.infrastructure.controller.gettaskdetails
 
-import com.matias.timetracking.project.domain.enums.Priority
-import java.time.LocalDate
 import java.util.*
 
 data class TaskDetailsDto(
@@ -14,7 +12,4 @@ data class TaskDetailsDto(
     val milestoneName: String,
 )
 
-data class PriorityDto(
-    val id: Int,
-    val name: String
-)
+data class PriorityDto(val id: Int, val name: String)

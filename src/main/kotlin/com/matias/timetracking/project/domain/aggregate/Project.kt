@@ -16,20 +16,25 @@ data class Project private constructor(
     val category: Category,
     val createdAt: LocalDateTime,
     private var updatedAt: LocalDateTime,
-    private val milestones: MutableList<Milestone>
+    private val milestones: MutableList<Milestone>,
 ) {
 
     init {
-        if(name.isBlank())
+        if (name.isBlank()) {
             throw DomainException("Project name cannot be blank")
-        if(name.length > MAX_NAME_LENGTH)
+        }
+        if (name.length > MAX_NAME_LENGTH) {
             throw DomainException("Project name length must be less than $MAX_NAME_LENGTH")
-        if(description != null && description.length > MAX_DESCRIPTION_LENGTH)
+        }
+        if (description != null && description.length > MAX_DESCRIPTION_LENGTH) {
             throw DomainException("Project description length must be less than $MAX_DESCRIPTION_LENGTH")
-        if(category.isInvalid())
+        }
+        if (category.isInvalid()) {
             throw DomainException("Project category is not valid")
-        if(updatedAt.isBefore(createdAt))
+        }
+        if (updatedAt.isBefore(createdAt)) {
             throw DomainException("Project update date cannot be before than creation date")
+        }
     }
 
     fun milestones(): List<Milestone> = milestones.map { it.getCopy() }
@@ -40,23 +45,23 @@ data class Project private constructor(
 
     fun updatedAt() = this.updatedAt
 
-    fun addMilestone(
-        name: String,
-        description: String?,
-        startDate: LocalDate?,
-        endDate: LocalDate?
-    ): Milestone {
-        if(id == null)
+    @Suppress("ThrowsCount")
+    fun addMilestone(name: String, description: String?, startDate: LocalDate?, endDate: LocalDate?): Milestone {
+        if (id == null) {
             throw IllegalStateException("Project id cannot be null")
+        }
 
-        if(milestones.any { it.name == name })
+        if (milestones.any { it.name == name }) {
             throw DomainException("Milestone with name $name already exists")
+        }
 
-        if(milestones.mapNotNull { it.startDate }.any { it == startDate })
+        if (milestones.mapNotNull { it.startDate }.any { it == startDate }) {
             throw DomainException("This project already has a milestone with the same start date")
+        }
 
-        if(milestones.mapNotNull { it.endDate }.any { it == endDate })
+        if (milestones.mapNotNull { it.endDate }.any { it == endDate }) {
             throw DomainException("This project already has a milestone with the same end date")
+        }
 
         val newMilestone = Milestone.create(
             projectId = id,
@@ -64,7 +69,7 @@ data class Project private constructor(
             description = description,
             startDate = startDate,
             endDate = endDate,
-            mutableListOf()
+            mutableListOf(),
         )
 
         milestones.add(newMilestone)
@@ -74,21 +79,17 @@ data class Project private constructor(
         return newMilestone.getCopy()
     }
 
-    fun addTaskToMilestone(
-        name: String,
-        description: String?,
-        priorityId: Int,
-        milestoneId: UUID,
-    ) : Task {
+    fun addTaskToMilestone(name: String, description: String?, priorityId: Int, milestoneId: UUID): Task {
         val milestone = milestones.find { it.id == milestoneId }
-        if(milestone == null)
+        if (milestone == null) {
             throw DomainException("This milestone is not contained in this project")
+        }
 
         val newTask = milestone.addTask(
             name = name,
             description = description,
             priorityId = priorityId,
-            false
+            false,
         )
 
         updatedAt = LocalDateTime.now()
@@ -100,34 +101,31 @@ data class Project private constructor(
         const val MAX_NAME_LENGTH = 100
         const val MAX_DESCRIPTION_LENGTH = 500
 
-        fun create(
-            name: String,
-            description: String?,
-            category: Category
-        ) = Project(
-                name = name.trim(),
-                description = description?.trim().takeIf { !it.isNullOrBlank() },
-                category = category,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now(),
-                milestones = mutableListOf()
-            )
+        fun create(name: String, description: String?, category: Category) = Project(
+            name = name.trim(),
+            description = description?.trim().takeIf { !it.isNullOrBlank() },
+            category = category,
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now(),
+            milestones = mutableListOf(),
+        )
 
         fun load(
-            id: UUID, name: String,
+            id: UUID,
+            name: String,
             description: String?,
             category: Category,
             createdAt: LocalDateTime,
             updatedAt: LocalDateTime,
-            milestones: MutableList<Milestone>
+            milestones: MutableList<Milestone>,
         ) = Project(
-                id = id,
-                name = name,
-                description = description,
-                category = category,
-                createdAt = createdAt,
-                updatedAt = updatedAt,
-                milestones = milestones
-            )
+            id = id,
+            name = name,
+            description = description,
+            category = category,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+            milestones = milestones,
+        )
     }
 }

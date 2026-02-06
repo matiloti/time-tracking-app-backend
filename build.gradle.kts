@@ -1,12 +1,12 @@
-import io.gitlab.arturbosch.detekt.Detekt
+import dev.detekt.gradle.Detekt
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
-	kotlin("jvm") version "2.2.21"
-	kotlin("plugin.spring") version "2.2.21"
+	kotlin("jvm") version "2.3.0"
+	kotlin("plugin.spring") version "2.3.0"
 	id("org.springframework.boot") version "4.0.1"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("io.gitlab.arturbosch.detekt") version "1.23.8"
+	id("dev.detekt") version "2.0.0-alpha.2"
 }
 
 group = "com.matias"
@@ -41,7 +41,7 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers-junit-jupiter")
 	testImplementation("org.testcontainers:testcontainers-postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
+	detektPlugins("dev.detekt:detekt-rules-ktlint-wrapper:2.0.0-alpha.2")
 }
 
 kotlin {
@@ -53,14 +53,14 @@ kotlin {
 detekt {
 	buildUponDefaultConfig = true
 	allRules = false
+	autoCorrect = true
 }
 
 tasks.withType<Detekt>().configureEach {
 	jvmTarget = "21"
 	reports {
 		html.required.set(true)
-		xml.required.set(false)
-		txt.required.set(false)
+		checkstyle.required.set(false)
 	}
 }
 

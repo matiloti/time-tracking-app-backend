@@ -5,7 +5,11 @@ import com.matias.timetracking.project.application.usecase.createtask.CreateTask
 import com.matias.timetracking.project.application.usecase.createtask.CreateTaskUseCase
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.util.*
 
@@ -16,22 +20,19 @@ class CreateTaskController(private val createTaskUseCase: CreateTaskUseCase) {
     @PostMapping
     fun createTask(
         @PathVariable milestoneId: UUID,
-        @Valid @RequestBody request: CreateTaskRequest
-    ): ResponseEntity<Any> =
-        createTaskUseCase
-            .execute(request.mapToCommand(milestoneId))
-            .mapToResponse()
+        @Valid @RequestBody request: CreateTaskRequest,
+    ): ResponseEntity<Any> = createTaskUseCase
+        .execute(request.mapToCommand(milestoneId))
+        .mapToResponse()
 
-    private fun CreateTaskRequest.mapToCommand(milestoneId: UUID): CreateTaskCommand =
-        CreateTaskCommand(
-            name = name,
-            description = description,
-            priority = priorityId,
-            milestoneId = milestoneId
-        )
+    private fun CreateTaskRequest.mapToCommand(milestoneId: UUID): CreateTaskCommand = CreateTaskCommand(
+        name = name,
+        description = description,
+        priority = priorityId,
+        milestoneId = milestoneId,
+    )
 
-    private fun CreateTaskResponse.mapToResponse(): ResponseEntity<Any> =
-        ResponseEntity
-            .created(URI.create("/tasks/${id}"))
-            .build()
+    private fun CreateTaskResponse.mapToResponse(): ResponseEntity<Any> = ResponseEntity
+        .created(URI.create("/tasks/$id"))
+        .build()
 }

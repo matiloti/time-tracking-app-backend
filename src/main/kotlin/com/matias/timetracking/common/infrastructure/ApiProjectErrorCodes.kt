@@ -5,15 +5,16 @@ enum class ApiProjectErrorCodes(val defaultMsg: String) {
     MILESTONE_ID_NOT_FOUND("Milestone not found"),
     TASK_ID_NOT_FOUND("Task not found"),
     DUPLICATED_PROJECT_NAME("Duplicated project name"),
-    INVALID_REQUEST_BODY("Invalid request body. Please, check for types and required fields.");
+    INVALID_REQUEST_BODY("Invalid request body. Please, check for types and required fields."),
+    ;
 
     fun getApiError() = ApiError(
         code = this.name,
-        message = this.defaultMsg
+        message = this.defaultMsg,
     )
 
     fun getApiError(msg: String) = ApiError(
         code = this.name,
-        message = msg
+        message = msg,
     )
 }

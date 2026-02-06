@@ -26,7 +26,10 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(NoResourceFoundException::class)
-    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleNoResourceFoundException(
+        e: NoResourceFoundException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
@@ -42,7 +45,10 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(ProjectIdNotFoundException::class)
-    fun handleProjectIdNotFoundException(e: ProjectIdNotFoundException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleProjectIdNotFoundException(
+        e: ProjectIdNotFoundException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
@@ -50,7 +56,10 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(DuplicatedProjectNameException::class)
-    fun handleDuplicatedProjectNameException(e: DuplicatedProjectNameException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleDuplicatedProjectNameException(
+        e: DuplicatedProjectNameException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.CONFLICT)
@@ -58,7 +67,10 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleHttpMessageNotReadableException(
+        e: HttpMessageNotReadableException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError> {
         logError(request, e)
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -66,7 +78,10 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ApiError> {
+    fun handleValidationException(
+        e: MethodArgumentNotValidException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ApiError> {
         logError(request, e)
         val errors = e.bindingResult.fieldErrors.associate {
             it.field to (it.defaultMessage ?: "Invalid value")
@@ -78,13 +93,12 @@ class GlobalControllerAdvice {
 
     companion object {
         val logger: Logger = LoggerFactory.getLogger(GlobalControllerAdvice::class.java)
-        private fun logError(
-            request: HttpServletRequest,
-            e: Exception
-        ) = logger.error(
+        private fun logError(request: HttpServletRequest, e: Exception) = logger.error(
             """[${e.javaClass.simpleName}] ${request.method} ${request.requestURI}
-                |>>> Message: ${e.message} 
+                |>>> Message: ${e.message}
                 |>>> Cause: ${e.cause}
-                |>>> Trace: ${e.printStackTrace()}""".trimMargin()
-        )    }
+                |>>> Trace: ${e.printStackTrace()}
+            """.trimMargin(),
+        )
+    }
 }

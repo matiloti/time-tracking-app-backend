@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.client.RestTestClient
 import java.time.LocalDate
 import java.util.*
 
-class ProjectShould: EndToEndTest() {
+class ProjectShould : EndToEndTest() {
 
     @LocalServerPort
     var port: Int = 0
@@ -48,6 +48,7 @@ class ProjectShould: EndToEndTest() {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun `create project with milestone and task happy path`() {
         // PROJECT --------------------
         // WHEN - empty DB
@@ -56,18 +57,17 @@ class ProjectShould: EndToEndTest() {
         val createProjectRequest = CreateProjectRequest(
             name = "Test Project",
             description = "Test description",
-            categoryId = 1
+            categoryId = 1,
         )
         val projectCreateResponse = restTestClient
             .post()
             .uri("http://localhost:$port/projects")
             .body(createProjectRequest)
             .exchange()
-
-        // THEN - project is correctly created and location is returned
+            // THEN - project is correctly created and location is returned
             .expectStatus().isCreated
             .expectHeader().exists("Location")
-            .expectHeader().valueMatches("location","/projects/.+")
+            .expectHeader().valueMatches("location", "/projects/.+")
 
         val projectLocation = projectCreateResponse
             .returnResult()
@@ -83,18 +83,17 @@ class ProjectShould: EndToEndTest() {
             name = "First milestone",
             description = "This milestone must have...",
             startDate = LocalDate.now(),
-            endDate = LocalDate.now().plusDays(7)
+            endDate = LocalDate.now().plusDays(7),
         )
         val milestoneCreateResponse = restTestClient
             .post()
-            .uri("http://localhost:$port${projectLocation}/milestones")
+            .uri("http://localhost:$port$projectLocation/milestones")
             .body(milestoneRequest)
             .exchange()
-
-        // THEN - milestone is correctly created
+            // THEN - milestone is correctly created
             .expectStatus().isCreated
             .expectHeader().exists("Location")
-            .expectHeader().valueMatches("location","/milestones/.+")
+            .expectHeader().valueMatches("location", "/milestones/.+")
 
         val milestoneLocation = milestoneCreateResponse
             .returnResult()
@@ -109,18 +108,17 @@ class ProjectShould: EndToEndTest() {
         val taskRequest = CreateTaskRequest(
             name = "To check if this test works",
             description = "This test should work pls",
-            priorityId = Priority.HIGH.id
+            priorityId = Priority.HIGH.id,
         )
         restTestClient
             .post()
-            .uri("http://localhost:$port${milestoneLocation}/tasks")
+            .uri("http://localhost:$port$milestoneLocation/tasks")
             .body(taskRequest)
             .exchange()
-
-        // THEN - task is correctly created
+            // THEN - task is correctly created
             .expectStatus().isCreated
             .expectHeader().exists("Location")
-            .expectHeader().valueMatches("location","/tasks/.+")
+            .expectHeader().valueMatches("location", "/tasks/.+")
 
         // ALL --------------------
         // Lastly, check everything is ok

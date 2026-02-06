@@ -7,5 +7,5 @@ data class CreateProjectRequest(
     val name: String,
     val description: String?,
     @field:NotNull(message = "Project name is required")
-    val categoryId: Int
+    val categoryId: Int,
 )

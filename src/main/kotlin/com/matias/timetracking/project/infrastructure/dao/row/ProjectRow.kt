@@ -13,5 +13,5 @@ data class ProjectRow(
     val description: String?,
     val categoryId: Int,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 )

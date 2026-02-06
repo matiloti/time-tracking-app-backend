@@ -8,27 +8,22 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class MilestoneQueryRepository(
-    val projectDao: ProjectDao,
-    val milestoneDao: MilestoneDao
-) {
-    fun getMilestoneDetailsById(milestoneId: UUID) =
-        milestoneDao
-            .findByIdOrNull(milestoneId)
-            ?.let { milestoneRow ->
-                projectDao
-                    .findByIdOrNull(milestoneRow.projectId)
-                    ?.let { projectRow ->
-                        MilestoneDetailsDto(
-                            id = milestoneRow.id,
-                            name = milestoneRow.name,
-                            description = milestoneRow.description,
-                            startDate = milestoneRow.startDate,
-                            endDate = milestoneRow.endDate,
-                            projectId = projectRow.id!!,
-                            projectName = projectRow.name
-                        )
-                    }
-            }
-
+class MilestoneQueryRepository(val projectDao: ProjectDao, val milestoneDao: MilestoneDao) {
+    fun getMilestoneDetailsById(milestoneId: UUID) = milestoneDao
+        .findByIdOrNull(milestoneId)
+        ?.let { milestoneRow ->
+            projectDao
+                .findByIdOrNull(milestoneRow.projectId)
+                ?.let { projectRow ->
+                    MilestoneDetailsDto(
+                        id = milestoneRow.id,
+                        name = milestoneRow.name,
+                        description = milestoneRow.description,
+                        startDate = milestoneRow.startDate,
+                        endDate = milestoneRow.endDate,
+                        projectId = projectRow.id!!,
+                        projectName = projectRow.name,
+                    )
+                }
+        }
 }

@@ -14,14 +14,15 @@ import java.util.*
 @RequestMapping("/tasks")
 class GetTaskDetailsController(private val taskQueryRepository: TaskQueryRepository) {
     @GetMapping("/{taskId}/details")
-    fun getProjectDetails(@PathVariable taskId: UUID): ResponseEntity<Any> =
-        taskQueryRepository
-            .getTaskDetailsById(taskId)
-            .mapToResponse()
+    fun getProjectDetails(@PathVariable taskId: UUID): ResponseEntity<Any> = taskQueryRepository
+        .getTaskDetailsById(taskId)
+        .mapToResponse()
 
-    private fun TaskDetailsDto?.mapToResponse(): ResponseEntity<Any> =
-        if (this != null) ResponseEntity.ok(this)
-        else ResponseEntity
+    private fun TaskDetailsDto?.mapToResponse(): ResponseEntity<Any> = if (this != null) {
+        ResponseEntity.ok(this)
+    } else {
+        ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(ApiProjectErrorCodes.TASK_ID_NOT_FOUND.getApiError())
+    }
 }

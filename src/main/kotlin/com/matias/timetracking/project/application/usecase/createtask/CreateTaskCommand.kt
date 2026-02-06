@@ -6,5 +6,5 @@ data class CreateTaskCommand(
     val name: String,
     val description: String?,
     val priority: Int,
-    val milestoneId: UUID
+    val milestoneId: UUID,
 )

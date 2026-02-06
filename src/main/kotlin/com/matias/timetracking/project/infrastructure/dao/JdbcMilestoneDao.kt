@@ -6,9 +6,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class JdbcMilestoneDao(private val jdbc: NamedParameterJdbcTemplate) {
-    fun batchUpdate(milestones: List<MilestoneRow>): IntArray =
-        jdbc.batchUpdate(
-            """
+    fun batchUpdate(milestones: List<MilestoneRow>): IntArray = jdbc.batchUpdate(
+        """
             UPDATE milestones SET
                 name = :name,
                 description = :description,
@@ -16,14 +15,16 @@ class JdbcMilestoneDao(private val jdbc: NamedParameterJdbcTemplate) {
                 end_date = :endDate,
                 updated_at = :updatedAt
             WHERE id = :id
-            """.trimIndent(),
-            milestones.map { mapOf(
+        """.trimIndent(),
+        milestones.map {
+            mapOf(
                 "id" to it.id,
                 "name" to it.name,
                 "description" to it.description,
                 "startDate" to it.startDate,
                 "endDate" to it.endDate,
-                "updatedAt" to it.updatedAt
-            ) }.toTypedArray()
-        )
+                "updatedAt" to it.updatedAt,
+            )
+        }.toTypedArray(),
+    )
 }

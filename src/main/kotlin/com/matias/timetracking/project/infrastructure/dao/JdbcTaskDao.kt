@@ -6,9 +6,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class JdbcTaskDao(private val jdbc: NamedParameterJdbcTemplate) {
-    fun batchUpdate(tasks: List<TaskRow>): IntArray =
-        jdbc.batchUpdate(
-            """
+    fun batchUpdate(tasks: List<TaskRow>): IntArray = jdbc.batchUpdate(
+        """
             UPDATE tasks SET
                 name = :name,
                 description = :description,
@@ -16,14 +15,16 @@ class JdbcTaskDao(private val jdbc: NamedParameterJdbcTemplate) {
                 completed = :completed,
                 updated_at = :updatedAt
             WHERE id = :id
-            """.trimIndent(),
-            tasks.map { mapOf(
+        """.trimIndent(),
+        tasks.map {
+            mapOf(
                 "id" to it.id,
                 "name" to it.name,
                 "description" to it.description,
                 "priority" to it.priorityId,
                 "completed" to it.completed,
-                "updatedAt" to it.updatedAt
-            ) }.toTypedArray()
-        )
+                "updatedAt" to it.updatedAt,
+            )
+        }.toTypedArray(),
+    )
 }

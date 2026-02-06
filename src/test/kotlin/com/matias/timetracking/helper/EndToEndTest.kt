@@ -13,6 +13,7 @@ import org.testcontainers.utility.DockerImageName
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestTestClient
 @ActiveProfiles("test")
+@Suppress("UtilityClassWithPublicConstructor")
 abstract class EndToEndTest {
     companion object {
         @Container

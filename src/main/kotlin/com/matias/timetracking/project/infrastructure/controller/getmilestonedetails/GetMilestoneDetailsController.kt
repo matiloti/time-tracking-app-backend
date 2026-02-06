@@ -14,14 +14,15 @@ import java.util.*
 @RequestMapping("/milestones")
 class GetMilestoneDetailsController(private val milestoneQueryRepository: MilestoneQueryRepository) {
     @GetMapping("/{milestoneId}/details")
-    fun getProjectDetails(@PathVariable milestoneId: UUID): ResponseEntity<Any> =
-        milestoneQueryRepository
-            .getMilestoneDetailsById(milestoneId)
-            .mapToResponse()
+    fun getProjectDetails(@PathVariable milestoneId: UUID): ResponseEntity<Any> = milestoneQueryRepository
+        .getMilestoneDetailsById(milestoneId)
+        .mapToResponse()
 
-    private fun MilestoneDetailsDto?.mapToResponse(): ResponseEntity<Any> =
-        if (this != null) ResponseEntity.ok(this)
-        else ResponseEntity
+    private fun MilestoneDetailsDto?.mapToResponse(): ResponseEntity<Any> = if (this != null) {
+        ResponseEntity.ok(this)
+    } else {
+        ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(ApiProjectErrorCodes.MILESTONE_ID_NOT_FOUND.getApiError())
+    }
 }

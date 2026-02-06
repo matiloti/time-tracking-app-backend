@@ -17,16 +17,21 @@ data class Task private constructor(
     val updatedAt: LocalDateTime,
 ) {
     init {
-        if(name.isBlank())
+        if (name.isBlank()) {
             throw DomainException("Task name cannot be blank")
-        if(name.length > MAX_NAME_LENGTH)
+        }
+        if (name.length > MAX_NAME_LENGTH) {
             throw DomainException("Task '$name' name length must be less than $MAX_NAME_LENGTH")
-        if(description != null && description.length > MAX_DESCRIPTION_LENGTH)
+        }
+        if (description != null && description.length > MAX_DESCRIPTION_LENGTH) {
             throw DomainException("Task '$name' description length must be less than $MAX_DESCRIPTION_LENGTH")
-        if(priority.isInvalid())
+        }
+        if (priority.isInvalid()) {
             throw DomainException("Task '$name' with invalid priority value")
-        if(updatedAt.isBefore(createdAt))
+        }
+        if (updatedAt.isBefore(createdAt)) {
             throw DomainException("Task '$name' update date cannot be before than creation date")
+        }
     }
 
     fun id(): UUID? = id?.let { UUID.fromString(it.toString()) }
@@ -37,21 +42,16 @@ data class Task private constructor(
         const val MAX_NAME_LENGTH = 100
         const val MAX_DESCRIPTION_LENGTH = 500
 
-        fun create(
-            milestoneId: UUID,
-            name: String,
-            description: String?,
-            priority: Priority,
-            completed: Boolean,
-        ) = Task(
-            milestoneId = milestoneId,
-            name = name.trim(),
-            description = description?.trim().takeIf { !it.isNullOrBlank() },
-            priority = priority,
-            completed = completed,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
-        )
+        fun create(milestoneId: UUID, name: String, description: String?, priority: Priority, completed: Boolean) =
+            Task(
+                milestoneId = milestoneId,
+                name = name.trim(),
+                description = description?.trim().takeIf { !it.isNullOrBlank() },
+                priority = priority,
+                completed = completed,
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now(),
+            )
 
         fun load(
             id: UUID,
@@ -61,7 +61,7 @@ data class Task private constructor(
             priority: Priority,
             createdAt: LocalDateTime,
             updatedAt: LocalDateTime,
-            completed: Boolean
+            completed: Boolean,
         ) = Task(
             id = id,
             milestoneId = milestoneId,
@@ -70,7 +70,7 @@ data class Task private constructor(
             priority = priority,
             completed = completed,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
         )
 
         fun load(
@@ -81,7 +81,7 @@ data class Task private constructor(
             priorityValue: Int,
             createdAt: LocalDateTime,
             updatedAt: LocalDateTime,
-            completed: Boolean
+            completed: Boolean,
         ) = Task(
             id = id,
             milestoneId = milestoneId,
@@ -90,7 +90,7 @@ data class Task private constructor(
             priority = Priority.parse(priorityValue),
             completed = completed,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
         )
     }
 }

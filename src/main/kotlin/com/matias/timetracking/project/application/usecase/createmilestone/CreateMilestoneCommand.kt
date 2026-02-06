@@ -8,5 +8,5 @@ data class CreateMilestoneCommand(
     val name: String,
     val description: String?,
     val startDate: LocalDate?,
-    val endDate: LocalDate?
+    val endDate: LocalDate?,
 )

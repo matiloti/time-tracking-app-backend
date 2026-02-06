@@ -10,30 +10,25 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-class TaskQueryRepository(
-    val milestoneDao: MilestoneDao,
-    val taskDao: TaskDao
-) {
-    fun getTaskDetailsById(taskId: UUID) =
-        taskDao
-            .findByIdOrNull(taskId)
-            ?.let { taskRow ->
-                milestoneDao
-                    .findByIdOrNull(taskRow.milestoneId)
-                    ?.let { milestoneRow ->
-                        TaskDetailsDto(
-                            id = taskRow.id,
-                            name = taskRow.name,
-                            description = taskRow.description,
-                            priority = PriorityDto(
-                                id = Priority.parse(taskRow.priorityId).id,
-                                name = Priority.parse(taskRow.priorityId).name
-                            ),
-                            completed = taskRow.completed,
-                            milestoneId = milestoneRow.id!!,
-                            milestoneName = milestoneRow.name
-                        )
-                    }
-            }
-
+class TaskQueryRepository(val milestoneDao: MilestoneDao, val taskDao: TaskDao) {
+    fun getTaskDetailsById(taskId: UUID) = taskDao
+        .findByIdOrNull(taskId)
+        ?.let { taskRow ->
+            milestoneDao
+                .findByIdOrNull(taskRow.milestoneId)
+                ?.let { milestoneRow ->
+                    TaskDetailsDto(
+                        id = taskRow.id,
+                        name = taskRow.name,
+                        description = taskRow.description,
+                        priority = PriorityDto(
+                            id = Priority.parse(taskRow.priorityId).id,
+                            name = Priority.parse(taskRow.priorityId).name,
+                        ),
+                        completed = taskRow.completed,
+                        milestoneId = milestoneRow.id!!,
+                        milestoneName = milestoneRow.name,
+                    )
+                }
+        }
 }

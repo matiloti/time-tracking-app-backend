@@ -16,18 +16,16 @@ import java.net.URI
 class CreateProjectController(private val createProjectUseCase: CreateProjectUseCase) {
 
     @PostMapping
-    fun createProject(@Valid @RequestBody request: CreateProjectRequest): ResponseEntity<Any> =
-        createProjectUseCase
-            .execute(request.mapToCommand())
-            .mapToResponse()
+    fun createProject(@Valid @RequestBody request: CreateProjectRequest): ResponseEntity<Any> = createProjectUseCase
+        .execute(request.mapToCommand())
+        .mapToResponse()
 
-    private fun CreateProjectRequest.mapToCommand(): CreateProjectCommand =
-        CreateProjectCommand(
-            name,
-            description,
-            categoryId
-        )
+    private fun CreateProjectRequest.mapToCommand(): CreateProjectCommand = CreateProjectCommand(
+        name,
+        description,
+        categoryId,
+    )
 
     private fun CreateProjectResponse.mapToResponse(): ResponseEntity<Any> =
-        ResponseEntity.created(URI.create("/projects/${id}")).build()
+        ResponseEntity.created(URI.create("/projects/$id")).build()
 }

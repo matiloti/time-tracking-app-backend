@@ -10,7 +10,7 @@ data class ProjectDetailsDto(
     val description: String?,
     val categoryId: Int,
     val createdAt: LocalDateTime?,
-    val milestones: List<MilestoneItem>
+    val milestones: List<MilestoneItem>,
 )
 
 data class MilestoneItem(

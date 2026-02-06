@@ -6,5 +6,5 @@ data class CreateTaskRequest(
     @field:NotNull(message = "Task name is required")
     val name: String,
     val description: String?,
-    val priorityId: Int
+    val priorityId: Int,
 )

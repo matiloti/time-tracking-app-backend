@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/projects")
 class ListAllProjectsController(private val projectQueryRepository: ProjectQueryRepository) {
     @GetMapping("/listAll")
-    fun listAll(): ResponseEntity<List<ProjectListItemResponse>> =
-        projectQueryRepository
-            .listAllProjects()
-            .mapToResponse()
+    fun listAll(): ResponseEntity<List<ProjectListItemResponse>> = projectQueryRepository
+        .listAllProjects()
+        .mapToResponse()
 
     private fun List<ProjectListItemResponse>.mapToResponse(): ResponseEntity<List<ProjectListItemResponse>> =
         ResponseEntity.ok(this)
