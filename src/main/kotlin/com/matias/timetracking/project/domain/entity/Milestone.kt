@@ -8,7 +8,7 @@ import java.util.*
 
 @ConsistentCopyVisibility
 data class Milestone private constructor(
-    val id: UUID? = null,
+    val id: UUID,
     val projectId: UUID,
     val name: String,
     val description: String?,
@@ -46,7 +46,7 @@ data class Milestone private constructor(
         }
 
         val newTask = Task.create(
-            milestoneId = id!!, // TODO check this
+            milestoneId = id,
             name = name,
             description = description,
             priority = Priority.parse(priorityId),
@@ -74,6 +74,7 @@ data class Milestone private constructor(
             endDate: LocalDate?,
             tasks: MutableList<Task>,
         ) = Milestone(
+            id = UUID.randomUUID(),
             projectId = projectId,
             name = name.trim(),
             description = description?.trim().takeIf { !it.isNullOrBlank() },

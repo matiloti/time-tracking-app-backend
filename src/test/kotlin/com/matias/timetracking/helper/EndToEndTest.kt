@@ -30,6 +30,7 @@ abstract class EndToEndTest {
         fun `db connection is established`() {
             assertTrue(postgres.isCreated)
             assertTrue(postgres.isRunning)
+            println("DB connected successfully!")
         }
     }
 }

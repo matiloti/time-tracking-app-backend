@@ -21,7 +21,7 @@ class MilestoneQueryRepository(val projectDao: ProjectDao, val milestoneDao: Mil
                         description = milestoneRow.description,
                         startDate = milestoneRow.startDate,
                         endDate = milestoneRow.endDate,
-                        projectId = projectRow.id!!,
+                        projectId = projectRow.id,
                         projectName = projectRow.name,
                     )
                 }

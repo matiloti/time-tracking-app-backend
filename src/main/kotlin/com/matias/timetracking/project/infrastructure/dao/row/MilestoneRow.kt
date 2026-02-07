@@ -9,7 +9,7 @@ import java.util.*
 @Table("milestones")
 data class MilestoneRow(
     @Id
-    var id: UUID? = null,
+    val id: UUID,
     val projectId: UUID,
     val name: String,
     val description: String?,

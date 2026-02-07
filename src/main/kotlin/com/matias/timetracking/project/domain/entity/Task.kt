@@ -7,14 +7,14 @@ import java.util.*
 
 @ConsistentCopyVisibility
 data class Task private constructor(
-    private var id: UUID? = null,
+    val id: UUID,
     val milestoneId: UUID,
     val name: String,
     val description: String? = null,
     val priority: Priority,
     val completed: Boolean,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
+    private var updatedAt: LocalDateTime,
 ) {
     init {
         if (name.isBlank()) {
@@ -34,9 +34,8 @@ data class Task private constructor(
         }
     }
 
-    fun id(): UUID? = id?.let { UUID.fromString(it.toString()) }
-
     fun getCopy() = this.copy()
+    fun updatedAt() = this.updatedAt
 
     companion object {
         const val MAX_NAME_LENGTH = 100
@@ -44,6 +43,7 @@ data class Task private constructor(
 
         fun create(milestoneId: UUID, name: String, description: String?, priority: Priority, completed: Boolean) =
             Task(
+                id = UUID.randomUUID(),
                 milestoneId = milestoneId,
                 name = name.trim(),
                 description = description?.trim().takeIf { !it.isNullOrBlank() },
@@ -52,26 +52,6 @@ data class Task private constructor(
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now(),
             )
-
-        fun load(
-            id: UUID,
-            milestoneId: UUID,
-            name: String,
-            description: String?,
-            priority: Priority,
-            createdAt: LocalDateTime,
-            updatedAt: LocalDateTime,
-            completed: Boolean,
-        ) = Task(
-            id = id,
-            milestoneId = milestoneId,
-            name = name.trim(),
-            description = description?.trim().takeIf { !it.isNullOrBlank() },
-            priority = priority,
-            completed = completed,
-            createdAt = createdAt,
-            updatedAt = updatedAt,
-        )
 
         fun load(
             id: UUID,

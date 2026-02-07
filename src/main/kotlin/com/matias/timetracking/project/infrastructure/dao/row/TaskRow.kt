@@ -8,7 +8,7 @@ import java.util.*
 @Table("tasks")
 data class TaskRow(
     @Id
-    var id: UUID? = null,
+    val id: UUID,
     val milestoneId: UUID,
     val name: String,
     val description: String?,

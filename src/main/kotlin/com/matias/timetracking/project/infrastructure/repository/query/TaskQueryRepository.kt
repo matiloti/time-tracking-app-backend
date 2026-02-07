@@ -26,7 +26,7 @@ class TaskQueryRepository(val milestoneDao: MilestoneDao, val taskDao: TaskDao) 
                             name = Priority.parse(taskRow.priorityId).name,
                         ),
                         completed = taskRow.completed,
-                        milestoneId = milestoneRow.id!!,
+                        milestoneId = milestoneRow.id,
                         milestoneName = milestoneRow.name,
                     )
                 }

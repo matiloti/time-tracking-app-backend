@@ -10,7 +10,7 @@ import java.util.*
 
 @ConsistentCopyVisibility
 data class Project private constructor(
-    val id: UUID? = null,
+    val id: UUID,
     val name: String,
     val description: String? = null,
     val category: Category,
@@ -47,10 +47,6 @@ data class Project private constructor(
 
     @Suppress("ThrowsCount")
     fun addMilestone(name: String, description: String?, startDate: LocalDate?, endDate: LocalDate?): Milestone {
-        if (id == null) {
-            throw IllegalStateException("Project id cannot be null")
-        }
-
         if (milestones.any { it.name == name }) {
             throw DomainException("Milestone with name $name already exists")
         }
@@ -102,6 +98,7 @@ data class Project private constructor(
         const val MAX_DESCRIPTION_LENGTH = 500
 
         fun create(name: String, description: String?, category: Category) = Project(
+            id = UUID.randomUUID(),
             name = name.trim(),
             description = description?.trim().takeIf { !it.isNullOrBlank() },
             category = category,

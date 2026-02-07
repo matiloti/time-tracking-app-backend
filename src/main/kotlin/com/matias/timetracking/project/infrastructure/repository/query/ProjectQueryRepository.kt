@@ -16,7 +16,7 @@ class ProjectQueryRepository(val projectDao: ProjectDao, val milestoneDao: Miles
         .findByIdOrNull(projectId)
         ?.let { projectRow ->
             ProjectDetailsDto(
-                id = projectRow.id!!,
+                id = projectRow.id,
                 name = projectRow.name,
                 description = projectRow.description,
                 categoryId = projectRow.categoryId,
@@ -25,7 +25,7 @@ class ProjectQueryRepository(val projectDao: ProjectDao, val milestoneDao: Miles
                     .findByProjectId(projectId)
                     .map { milestoneRow ->
                         MilestoneItem(
-                            id = milestoneRow.id!!,
+                            id = milestoneRow.id,
                             name = milestoneRow.name,
                             startDate = milestoneRow.startDate,
                             endDate = milestoneRow.endDate,
@@ -36,7 +36,7 @@ class ProjectQueryRepository(val projectDao: ProjectDao, val milestoneDao: Miles
 
     fun listAllProjects(): List<ProjectListItemResponse> = projectDao.findAll().map {
         ProjectListItemResponse(
-            it.id!!,
+            it.id,
             it.name,
             it.description,
             it.categoryId,

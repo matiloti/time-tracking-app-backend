@@ -6,23 +6,52 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class JdbcMilestoneDao(private val jdbc: NamedParameterJdbcTemplate) {
-    fun batchUpdate(milestones: List<MilestoneRow>): IntArray = jdbc.batchUpdate(
+
+    fun upsert(milestone: MilestoneRow) = with(milestone) {
+        jdbc.update(
+            """
+            INSERT INTO milestones (id, project_id, name, description, start_date, end_date, created_at, updated_at)
+            VALUES(:id, :projectId, :name, :description, :startDate, :endDate, :createdAt, :updatedAt)
+            ON CONFLICT (id) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                start_date = EXCLUDED.start_date,
+                end_date = EXCLUDED.end_date,
+                updated_at = EXCLUDED.updated_at
+            """.trimIndent(),
+            mapOf(
+                "id" to id,
+                "projectId" to projectId,
+                "name" to name,
+                "description" to description,
+                "startDate" to startDate,
+                "endDate" to endDate,
+                "createdAt" to createdAt,
+                "updatedAt" to updatedAt,
+            ),
+        )
+    }
+
+    fun batchUpsert(milestones: List<MilestoneRow>): IntArray = jdbc.batchUpdate(
         """
-            UPDATE milestones SET
-                name = :name,
-                description = :description,
-                start_date = :startDate,
-                end_date = :endDate,
-                updated_at = :updatedAt
-            WHERE id = :id
+            INSERT INTO milestones (id, project_id, name, description, start_date, end_date, created_at, updated_at)
+            VALUES(:id, :projectId, :name, :description, :startDate, :endDate, :createdAt, :updatedAt)
+            ON CONFLICT (id) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                start_date = EXCLUDED.start_date,
+                end_date = EXCLUDED.end_date,
+                updated_at = EXCLUDED.updated_at
         """.trimIndent(),
         milestones.map {
             mapOf(
                 "id" to it.id,
+                "projectId" to it.projectId,
                 "name" to it.name,
                 "description" to it.description,
                 "startDate" to it.startDate,
                 "endDate" to it.endDate,
+                "createdAt" to it.createdAt,
                 "updatedAt" to it.updatedAt,
             )
         }.toTypedArray(),

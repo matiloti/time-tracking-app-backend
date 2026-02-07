@@ -8,7 +8,7 @@ import java.util.*
 @Table("projects")
 data class ProjectRow(
     @Id
-    var id: UUID? = null,
+    val id: UUID,
     val name: String,
     val description: String?,
     val categoryId: Int,
