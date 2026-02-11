@@ -4,13 +4,17 @@ services:
     container_name: spring-backend
     ports:
       - "8080:8080"
+    volumes:
+      - uploaded_images:/app/uploads
     environment:
       DB_URL: jdbc:postgresql://postgres:5432/time-tracker
       DB_USER: test
       DB_PASSWORD: test
       SPRING_PROFILES_ACTIVE: dev
+      UPLOAD_DIR: /app/uploads
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres:18
@@ -22,7 +26,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d time-tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
+  uploaded_images:
