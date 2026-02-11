@@ -1,14 +1,22 @@
-# Use lightweight JDK image
-FROM eclipse-temurin:21-jdk-jammy
+# Stage 1: Build
+FROM eclipse-temurin:21-jdk-jammy AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy the fat JAR built on host
-COPY build/libs/*.jar app.jar
+COPY gradle/ gradle/
+COPY gradlew build.gradle.kts settings.gradle.kts ./
+RUN ./gradlew dependencies --no-daemon
 
-# Expose port
+COPY src/ src/
+RUN ./gradlew bootJar --no-daemon
+
+# Stage 2: Run
+FROM eclipse-temurin:21-jre-jammy
+
+WORKDIR /app
+
+COPY --from=build /app/build/libs/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the Spring Boot app
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
