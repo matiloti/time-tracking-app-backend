@@ -13,8 +13,8 @@ data class MilestoneRow(
     val projectId: UUID,
     val name: String,
     val description: String?,
-    val startDate: LocalDate?,
-    val endDate: LocalDate?,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
 )

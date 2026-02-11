@@ -16,6 +16,6 @@ data class ProjectDetailsDto(
 data class MilestoneItem(
     val id: UUID,
     val name: String,
-    val startDate: LocalDate?,
-    val endDate: LocalDate?,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
 )

@@ -7,8 +7,8 @@ data class MilestoneDetailsDto(
     val id: UUID? = null,
     val name: String,
     val description: String?,
-    val startDate: LocalDate?,
-    val endDate: LocalDate?,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
     val projectId: UUID,
     val projectName: String,
 )

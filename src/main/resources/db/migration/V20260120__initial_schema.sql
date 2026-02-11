@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS milestones (
     project_id UUID NOT NULL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(500),
-    start_date DATE,
-    end_date DATE,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     CONSTRAINT fk__milestones_projects

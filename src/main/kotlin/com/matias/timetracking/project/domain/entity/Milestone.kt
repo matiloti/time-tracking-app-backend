@@ -12,8 +12,8 @@ data class Milestone private constructor(
     val projectId: UUID,
     val name: String,
     val description: String?,
-    val startDate: LocalDate?,
-    val endDate: LocalDate?,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
     val createdAt: LocalDateTime,
     private var updatedAt: LocalDateTime,
     private val tasks: MutableList<Task>,
@@ -28,7 +28,7 @@ data class Milestone private constructor(
         if (description != null && description.length > MAX_DESCRIPTION_LENGTH) {
             throw DomainException("Milestone description length must be less than $MAX_DESCRIPTION_LENGTH")
         }
-        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
+        if (endDate.isBefore(startDate)) {
             throw DomainException("Milestone end date cannot be before start date")
         }
         if (updatedAt.isBefore(createdAt)) {
@@ -70,8 +70,8 @@ data class Milestone private constructor(
             projectId: UUID,
             name: String,
             description: String?,
-            startDate: LocalDate?,
-            endDate: LocalDate?,
+            startDate: LocalDate,
+            endDate: LocalDate,
             tasks: MutableList<Task>,
         ) = Milestone(
             id = UUID.randomUUID(),
@@ -90,8 +90,8 @@ data class Milestone private constructor(
             projectId: UUID,
             name: String,
             description: String?,
-            startDate: LocalDate?,
-            endDate: LocalDate?,
+            startDate: LocalDate,
+            endDate: LocalDate,
             createdAt: LocalDateTime,
             updatedAt: LocalDateTime,
             tasks: MutableList<Task>,

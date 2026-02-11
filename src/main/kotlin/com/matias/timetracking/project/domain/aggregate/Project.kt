@@ -46,18 +46,20 @@ data class Project private constructor(
     fun updatedAt() = this.updatedAt
 
     @Suppress("ThrowsCount")
-    fun addMilestone(name: String, description: String?, startDate: LocalDate?, endDate: LocalDate?): Milestone {
+    fun addMilestone(name: String, description: String?, startDate: LocalDate, endDate: LocalDate): Milestone {
         if (milestones.any { it.name == name }) {
             throw DomainException("Milestone with name $name already exists")
         }
 
-        if (milestones.mapNotNull { it.startDate }.any { it == startDate }) {
+        if (milestones.map { it.startDate }.any { it == startDate }) {
             throw DomainException("This project already has a milestone with the same start date")
         }
 
-        if (milestones.mapNotNull { it.endDate }.any { it == endDate }) {
+        if (milestones.map { it.endDate }.any { it == endDate }) {
             throw DomainException("This project already has a milestone with the same end date")
         }
+
+        // TODO milestone date range validation
 
         val newMilestone = Milestone.create(
             projectId = id,
