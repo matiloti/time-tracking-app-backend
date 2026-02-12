@@ -11,4 +11,13 @@ data class MilestoneDetailsDto(
     val endDate: LocalDate,
     val projectId: UUID,
     val projectName: String,
+    val tasks: List<TaskItem>,
+)
+
+data class TaskItem(
+    val id: UUID,
+    val name: String,
+    val description: String? = null,
+    val priorityId: Int,
+    val completed: Boolean,
 )

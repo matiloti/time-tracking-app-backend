@@ -22,4 +22,6 @@ interface TaskDao : ListCrudRepository<TaskRow, UUID> {
     """,
     )
     fun findAllByProjectId(projectId: UUID): List<TaskRow>
+
+    fun findAllByMilestoneId(milestoneId: UUID): List<TaskRow>
 }

@@ -2,7 +2,7 @@ package com.matias.timetracking.project.domain.enums
 
 enum class Priority(val id: Int) {
     INVALID(-1),
-    LOW(0),
+    LOW(0), // TODO: fix priority, the first ID in DB is 1
     MEDIUM(1),
     HIGH(2),
     ;
