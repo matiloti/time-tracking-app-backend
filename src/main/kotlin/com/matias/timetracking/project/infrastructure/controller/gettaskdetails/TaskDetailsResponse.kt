@@ -3,7 +3,7 @@ package com.matias.timetracking.project.infrastructure.controller.gettaskdetails
 import java.util.*
 
 data class TaskDetailsDto(
-    val id: UUID? = null,
+    val id: UUID,
     val name: String,
     val description: String? = null,
     val priority: PriorityDto,
