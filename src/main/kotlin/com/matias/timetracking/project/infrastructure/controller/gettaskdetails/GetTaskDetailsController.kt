@@ -18,7 +18,7 @@ class GetTaskDetailsController(private val taskQueryRepository: TaskQueryReposit
         .getTaskDetailsById(taskId)
         .mapToResponse()
 
-    private fun TaskDetailsDto?.mapToResponse(): ResponseEntity<Any> = if (this != null) {
+    private fun TaskDetailsResponse?.mapToResponse(): ResponseEntity<Any> = if (this != null) {
         ResponseEntity.ok(this)
     } else {
         ResponseEntity
