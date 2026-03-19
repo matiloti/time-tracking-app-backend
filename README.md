@@ -38,6 +38,7 @@ You can watch them on my YouTube channel here:
 |-------|----------------------|---------------------|
 | `POST` | `/project`          | Create a project    |
 | `GET`  | `/projects/findAll` | Fetch all projects  |
+| `GET`  | `/actuator/health`  | Health check status |
 
 ---
 
