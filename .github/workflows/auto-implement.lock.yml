@@ -24,7 +24,7 @@
 # Reads the issue, analyzes the codebase, writes code, runs tests,
 # and creates a pull request with the implementation.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"766f950eec497d0b4adf8e339144d73ca204490aad253de33e83a3a8ad7cff23","compiler_version":"v0.62.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"3f96c328b44c22a09df97777afa36017a1c7120663b954fa5ec2947ee78c445e","compiler_version":"v0.62.0","strict":true}
 
 name: "Auto-Implement"
 "on":
@@ -638,6 +638,11 @@ jobs:
           
           [mcp_servers.safeoutputs.headers]
           Authorization = "$GH_AW_SAFE_OUTPUTS_API_KEY"
+          
+          [mcp_servers.safeoutputs."guard-policies"]
+          
+          [mcp_servers.safeoutputs."guard-policies".write-sink]
+          accept = ["*"]
           GH_AW_MCP_CONFIG_EOF
           
           # Generate JSON config for MCP gateway
@@ -654,7 +659,8 @@ jobs:
                 },
                 "guard-policies": {
                   "allow-only": {
-                    "min-integrity": "none"
+                    "min-integrity": "none",
+                    "repos": "all"
                   }
                 }
               },
@@ -663,6 +669,13 @@ jobs:
                 "url": "http://host.docker.internal:$GH_AW_SAFE_OUTPUTS_PORT",
                 "headers": {
                   "Authorization": "$GH_AW_SAFE_OUTPUTS_API_KEY"
+                },
+                "guard-policies": {
+                  "write-sink": {
+                    "accept": [
+                      "*"
+                    ]
+                  }
                 }
               }
             },

@@ -24,7 +24,7 @@
 # applying the requested fixes, and pushing updated code to the PR branch.
 # Designed to work in a loop with pr-review until the code is approved.
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"5093260190284aaa8401f3f87169f947dc8e170d3907e8f1574b67d603d92f62","compiler_version":"v0.62.0","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"7aaafb5599818a2f5b397ade2a84b889a74ab59410718a69333ab34996184595","compiler_version":"v0.62.0","strict":true}
 
 name: "Manage PR Review"
 "on":
@@ -585,6 +585,11 @@ jobs:
           
           [mcp_servers.safeoutputs.headers]
           Authorization = "$GH_AW_SAFE_OUTPUTS_API_KEY"
+          
+          [mcp_servers.safeoutputs."guard-policies"]
+          
+          [mcp_servers.safeoutputs."guard-policies".write-sink]
+          accept = ["*"]
           GH_AW_MCP_CONFIG_EOF
           
           # Generate JSON config for MCP gateway
@@ -601,7 +606,8 @@ jobs:
                 },
                 "guard-policies": {
                   "allow-only": {
-                    "min-integrity": "none"
+                    "min-integrity": "none",
+                    "repos": "all"
                   }
                 }
               },
@@ -610,6 +616,13 @@ jobs:
                 "url": "http://host.docker.internal:$GH_AW_SAFE_OUTPUTS_PORT",
                 "headers": {
                   "Authorization": "$GH_AW_SAFE_OUTPUTS_API_KEY"
+                },
+                "guard-policies": {
+                  "write-sink": {
+                    "accept": [
+                      "*"
+                    ]
+                  }
                 }
               }
             },

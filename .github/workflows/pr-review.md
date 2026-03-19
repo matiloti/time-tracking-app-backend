@@ -25,6 +25,7 @@ safe-outputs:
 tools:
   github:
     toolsets: [pull_requests, issues]
+    repos: all
     min-integrity: none
 
 timeout-minutes: 15
