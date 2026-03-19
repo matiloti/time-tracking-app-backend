@@ -23,6 +23,11 @@ safe-outputs:
     max: 2
   create-pull-request:
     max: 1
+    protected-files: allowed
+    allowed-files:
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "src/**"
 
 tools:
   github:

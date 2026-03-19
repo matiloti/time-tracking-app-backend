@@ -19,6 +19,7 @@ network:
 safe-outputs:
   create-pull-request:
     max: 1
+    protected-files: allowed
     allowed-files:
       - "build.gradle.kts"
       - "settings.gradle.kts"
