@@ -15,11 +15,12 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: health,info,metrics
   threads:
     virtual:
       enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

@@ -13,3 +13,19 @@ paths:
           $ref: 'http://localhost:8080/docs/responses.yml#/components/responses/BadRequest400'
         '500':
           $ref: 'http://localhost:8080/docs/responses.yml#/components/responses/ServerError500'
+  /actuator/health:
+    get:
+      tags: [System]
+      summary: Gets application health status
+      description: This operation returns current health information for operational monitoring.
+      responses:
+        '200':
+          description: Health information successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: UP

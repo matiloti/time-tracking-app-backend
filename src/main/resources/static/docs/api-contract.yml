@@ -8,6 +8,10 @@ servers:
 tags:
   - name: Project
     description: Endpoints to manage projects
+  - name: System
+    description: Endpoints for runtime monitoring
 paths:
   /project:
     $ref: 'http://localhost:8080/docs/paths.yml#/paths/~1project'
+  /actuator/health:
+    $ref: 'http://localhost:8080/docs/paths.yml#/paths/~1actuator~1health'
