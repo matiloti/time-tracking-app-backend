@@ -6,7 +6,7 @@ description: |
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, ready_for_review]
   reaction: eyes
 
 permissions: read-all
@@ -15,6 +15,7 @@ network:
   allowed:
     - defaults
     - jvm
+    - java
 
 safe-outputs:
   add-comment:
