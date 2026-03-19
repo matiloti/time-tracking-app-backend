@@ -24,6 +24,8 @@ safe-outputs:
       - "build.gradle.kts"
       - "settings.gradle.kts"
       - "src/**"
+      - "*.md"
+      - "docs/**"
   add-comment:
     max: 2
   add-labels:

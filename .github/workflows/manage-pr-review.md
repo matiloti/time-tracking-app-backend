@@ -28,6 +28,8 @@ safe-outputs:
       - "build.gradle.kts"
       - "settings.gradle.kts"
       - "src/**"
+      - "*.md"
+      - "docs/**"
 
 tools:
   github:
