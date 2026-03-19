@@ -19,6 +19,10 @@ network:
 safe-outputs:
   create-pull-request:
     max: 1
+    allowed-files:
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "src/**"
   add-comment:
     max: 2
   add-labels:
