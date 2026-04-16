@@ -15,6 +15,7 @@ network:
   allowed:
     - defaults
     - jvm
+    - java
 
 safe-outputs:
   add-comment:
