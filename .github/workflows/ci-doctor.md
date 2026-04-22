@@ -32,7 +32,7 @@ tools:
 
 timeout-minutes: 10
 
-engine: claude
+engine: codex
 
 source: githubnext/agentics/workflows/ci-doctor.md@51c8f6ad4357d2ecc06e47120031b3d75e80227d
 ---
