@@ -44,9 +44,15 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### Python ###
+.venv/
+
 .name
 
 gradle.xml
 vcs.xml
 sqldialects.xml
 /.idea/inspectionProfiles/Project_Default.xml
+
+.github/aw/logs
+graphify-out
